@@ -1,0 +1,2215 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>核心系统迁移知识库 · 界面原型 v2.1</title>
+<style>
+/* ============ 设计令牌（对齐真实系统 CSS 变量） ============ */
+:root{
+  --bg:            hsl(0 0% 100%);
+  --card:          hsl(0 0% 100%);
+  --fg:            hsl(240 10% 9%);
+  --fg-85:         hsl(240 7% 22%);
+  --fg-65:         hsl(240 5% 38%);
+  --muted-fg:      hsl(240 4% 52%);
+  --border:        hsl(240 6% 88%);
+  --border-soft:   hsl(240 6% 93%);
+  --primary:       hsl(212 100% 44%);
+  --primary-hover: hsl(212 100% 38%);
+  --primary-dim:   hsl(212 100% 44% / .09);
+  --secondary:     hsl(240 8% 96%);
+  --muted:         hsl(240 9% 96.5%);
+  --accent:        hsl(240 8% 94%);
+  --success:       hsl(144 58% 28%);
+  --success-dim:   hsl(144 58% 28% / .10);
+  --warning:       hsl(38 84% 30%);
+  --warning-dim:   hsl(38 84% 45% / .13);
+  --danger:        hsl(348 72% 45%);
+  --danger-dim:    hsl(348 72% 45% / .10);
+  --violet:        hsl(258 65% 48%);
+  --violet-dim:    hsl(258 65% 48% / .10);
+  --r-card: 10px;
+  --r-btn:  8px;
+  --r-tag:  6px;
+  --rail-w: 224px;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;background:var(--bg);color:var(--fg);
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans","Microsoft YaHei",sans-serif;
+  font-size:14px;line-height:22px;-webkit-font-smoothing:antialiased;
+}
+::-webkit-scrollbar{width:8px;height:8px}
+::-webkit-scrollbar-thumb{background:hsl(240 6% 82%);border-radius:8px}
+::-webkit-scrollbar-thumb:hover{background:hsl(240 6% 70%)}
+::-webkit-scrollbar-track{background:transparent}
+
+.app{display:flex;height:100vh;overflow:hidden}
+.mono{font-family:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;font-size:12px}
+
+/* ============ 侧栏 ============ */
+.rail{
+  width:var(--rail-w);flex:0 0 var(--rail-w);background:var(--bg);
+  border-right:1px solid var(--border-soft);display:flex;flex-direction:column;
+  overflow:hidden;
+}
+.brand{display:flex;align-items:center;gap:9px;height:50px;flex:0 0 50px;padding:0 14px;
+  border-bottom:1px solid var(--border-soft)}
+.brand-logo{width:22px;height:22px;border-radius:6px;flex:0 0 22px;
+  background:linear-gradient(135deg,hsl(212 100% 58%),hsl(258 90% 64%));position:relative}
+.brand-logo::after{content:"";position:absolute;inset:6px;border-radius:2px;
+  background:rgba(255,255,255,.92);clip-path:polygon(0 0,100% 0,100% 42%,0 42%,0 100%,42% 100%,42% 58%,100% 58%,100% 100%,0 100%)}
+.brand-name{font-size:14px;font-weight:600;letter-spacing:.2px;white-space:nowrap;
+  overflow:hidden;text-overflow:ellipsis}
+
+.nav{flex:1;overflow-y:auto;padding:8px 8px 16px}
+.nav-grp{margin-top:4px}
+.nav-grp-hd{display:flex;align-items:center;gap:8px;height:36px;padding:0 8px;border-radius:8px;
+  color:var(--fg-85);font-size:14px;cursor:default;user-select:none}
+.nav-grp-hd .ico{color:var(--muted-fg)}
+.nav-grp-hd .caret{margin-left:auto;color:var(--muted-fg);transition:transform .18s}
+.nav-grp.folded .caret{transform:rotate(-90deg)}
+.nav-grp.folded .nav-items{display:none}
+.nav-items{display:flex;flex-direction:column;gap:2px;padding:2px 0 4px}
+.nav-item{display:flex;align-items:center;gap:9px;height:34px;padding:0 8px 0 30px;
+  border-radius:8px;color:var(--fg-85);font-size:13.5px;cursor:pointer;
+  border:1px solid transparent;transition:background .14s,color .14s}
+.nav-item .ico{color:var(--muted-fg);flex:0 0 15px}
+.nav-item:hover{background:var(--accent);color:var(--fg)}
+.nav-item:hover .ico{color:var(--fg-85)}
+.nav-item.on{background:var(--primary-dim);color:hsl(212 100% 34%);border-color:hsl(212 60% 82%)}
+.nav-item.on .ico{color:hsl(212 100% 34%)}
+.nav-item .dot{margin-left:auto;width:6px;height:6px;border-radius:50%;background:var(--warning)}
+.rail-foot{flex:0 0 44px;display:flex;align-items:center;gap:10px;padding:0 14px;
+  border-top:1px solid var(--border-soft);color:var(--muted-fg);font-size:12px}
+
+/* ============ 主区骨架 ============ */
+.stage{flex:1;min-width:0;display:flex;flex-direction:column;overflow:hidden}
+.topbar{height:50px;flex:0 0 50px;display:flex;align-items:center;gap:10px;padding:0 14px;
+  border-bottom:1px solid var(--border-soft)}
+.crumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted-fg);min-width:0}
+.crumb b{color:var(--fg-85);font-weight:400}
+.crumb .sep{opacity:.5}
+.crumb .ico{color:var(--muted-fg)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:4px}
+.ibtn{width:30px;height:30px;display:grid;place-items:center;border-radius:7px;color:var(--muted-fg);
+  cursor:pointer;border:1px solid transparent}
+.ibtn:hover{background:var(--accent);color:var(--fg)}
+.ibtn.on{background:var(--primary-dim);color:hsl(212 100% 34%);border-color:hsl(212 60% 82%)}
+.search{display:flex;align-items:center;gap:7px;height:30px;padding:0 10px;min-width:180px;
+  border:1px solid var(--border);border-radius:var(--r-btn);color:var(--muted-fg);font-size:12.5px}
+.search kbd{margin-left:auto;font-family:inherit;font-size:11px;color:var(--muted-fg);
+  border:1px solid var(--border);border-radius:4px;padding:0 4px}
+
+.tabbar{height:38px;flex:0 0 38px;display:flex;align-items:flex-end;gap:2px;padding:0 10px;
+  border-bottom:1px solid var(--border-soft);overflow:hidden}
+.tab{display:flex;align-items:center;gap:6px;height:30px;padding:0 10px;border-radius:8px 8px 0 0;
+  font-size:12.5px;color:var(--muted-fg);cursor:pointer;border:1px solid transparent;border-bottom:0;
+  white-space:nowrap}
+.tab:hover{color:var(--fg-85);background:var(--muted)}
+.tab.on{background:var(--accent);border-color:var(--border);color:var(--fg)}
+.tab .x{opacity:.5;font-size:13px}
+
+.view{flex:1;min-height:0;overflow-y:auto;padding:14px}
+.view-inner{max-width:1440px}
+
+.page-hd{display:flex;align-items:flex-start;gap:12px;margin-bottom:12px}
+.page-hd h1{margin:0;font-size:19px;line-height:26px;font-weight:600;letter-spacing:.2px}
+.page-hd p{margin:2px 0 0;font-size:12px;color:var(--muted-fg)}
+.page-hd .hd-act{margin-left:auto;display:flex;gap:8px;align-items:center}
+
+/* ============ 卡片 ============ */
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--r-card)}
+.card-hd{display:flex;align-items:center;gap:8px;padding:14px 20px 0}
+.card-hd h3{margin:0;font-size:16px;line-height:24px;font-weight:600;color:var(--fg-85)}
+.card-hd .sub{font-size:12px;color:var(--muted-fg);font-weight:400}
+.card-hd .hd-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.card-bd{padding:14px 20px 18px}
+.card-bd.tight{padding:12px}
+.card+.card{margin-top:12px}
+.grid{display:grid;gap:12px}
+.g-2{grid-template-columns:1fr 376px}
+.g-2b{grid-template-columns:312px 1fr}
+.g-3{grid-template-columns:repeat(3,1fr)}
+.g-4{grid-template-columns:repeat(4,1fr)}
+.grid.g-2,.grid.g-2b,.grid.g-3{align-items:start}
+
+/* ============ 按钮 ============ */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:32px;padding:0 15px;
+  border-radius:var(--r-btn);border:1px solid var(--border);background:transparent;color:var(--fg-85);
+  font-size:14px;font-family:inherit;cursor:pointer;white-space:nowrap;transition:all .14s}
+.btn:hover{color:var(--primary);border-color:var(--primary)}
+.btn-primary{background:var(--primary);border-color:var(--primary);color:#fff}
+.btn-primary:hover{background:var(--primary-hover);border-color:var(--primary-hover);color:#fff}
+.btn-ghost{border-color:transparent;color:var(--muted-fg)}
+.btn-ghost:hover{background:var(--accent);color:var(--fg);border-color:transparent}
+.btn-sm{height:26px;padding:0 10px;font-size:12.5px;border-radius:6px}
+.btn-block{width:100%}
+.btn[disabled]{opacity:.45;cursor:not-allowed}
+
+/* ============ 表单 ============ */
+.field{margin-bottom:13px}
+.field>label{display:block;font-size:12.5px;color:var(--muted-fg);margin-bottom:6px}
+.field>label .req{color:var(--danger);margin-right:3px}
+.input,.select{width:100%;height:32px;padding:4px 11px;border-radius:var(--r-btn);
+  border:1px solid var(--border);background:var(--bg);color:var(--fg-85);font-size:14px;font-family:inherit;
+  display:flex;align-items:center}
+.input::placeholder{color:var(--muted-fg)}
+.input:focus,.select:focus{outline:0;border-color:var(--primary)}
+.select{cursor:pointer;justify-content:space-between}
+.select .caret{color:var(--muted-fg);margin-left:8px}
+.seg{display:flex;border:1px solid var(--border);border-radius:var(--r-btn);overflow:hidden}
+.seg>div{flex:1;height:30px;display:grid;place-items:center;font-size:12.5px;color:var(--muted-fg);
+  cursor:pointer;background:transparent}
+.seg>div.on{background:var(--primary);color:#fff}
+.seg>div+.div{border-left:1px solid var(--border)}
+.chk{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--fg-85);cursor:pointer}
+.chk i{width:15px;height:15px;border-radius:4px;border:1px solid var(--border);display:grid;place-items:center;
+  color:transparent;font-size:10px;font-style:normal}
+.chk.on i{background:var(--primary);border-color:var(--primary);color:#fff}
+
+/* ============ 标签 ============ */
+.tag{display:inline-flex;align-items:center;gap:4px;height:22px;padding:0 7px;border-radius:var(--r-tag);
+  font-size:12px;line-height:20px;background:var(--muted);color:var(--muted-fg);white-space:nowrap}
+.tag.b{background:hsl(212 90% 95%);color:hsl(212 100% 36%)}
+.tag.g{background:var(--success-dim);color:var(--success)}
+.tag.y{background:var(--warning-dim);color:var(--warning)}
+.tag.r{background:var(--danger-dim);color:var(--danger)}
+.tag.v{background:var(--violet-dim);color:var(--violet)}
+.tag.o{background:transparent;border:1px solid var(--border);color:var(--muted-fg)}
+.tag.sm{height:19px;padding:0 6px;font-size:11px;line-height:17px}
+
+/* ============ 表格 ============ */
+.tbl{width:100%;border-collapse:collapse;font-size:13px}
+.tbl th{text-align:left;font-weight:500;color:var(--muted-fg);background:var(--muted);
+  padding:9px 12px;border-bottom:1px solid var(--border);white-space:nowrap;font-size:12.5px}
+.tbl td{padding:11px 12px;border-bottom:1px solid var(--border-soft);color:var(--fg-85);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:0}
+.tbl tbody tr:hover td{background:hsl(240 9% 97%)}
+.tbl td.num{font-variant-numeric:tabular-nums}
+
+/* ============ 统计 / 分区 ============ */
+.stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.kpi{flex:1;min-width:120px;padding:12px 14px;border:1px solid var(--border);border-radius:var(--r-card);
+  background:var(--card)}
+.kpi .v{font-size:22px;line-height:28px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi .k{font-size:12px;color:var(--muted-fg);margin-top:2px}
+.kpi .v.s{color:var(--success)} .kpi .v.w{color:var(--warning)} .kpi .v.d{color:var(--danger)}
+.divider{height:1px;background:var(--border-soft);margin:14px 0}
+
+/* ============ 步骤条 ============ */
+.steps{display:flex;align-items:flex-start;gap:0}
+.step{flex:1;position:relative;padding-right:12px}
+.step .no{display:flex;align-items:center;gap:8px}
+.step .no i{width:22px;height:22px;border-radius:50%;border:1px solid var(--border);display:grid;
+  place-items:center;font-size:11px;font-style:normal;color:var(--muted-fg);flex:0 0 22px}
+.step.done .no i{background:var(--success-dim);border-color:hsl(144 45% 70%);color:var(--success)}
+.step.act .no i{background:var(--primary);border-color:var(--primary);color:#fff}
+.step .t{font-size:13px;color:var(--fg-85)}
+.step .d{font-size:11.5px;color:var(--muted-fg);margin-top:3px;padding-left:30px}
+.step::after{content:"";position:absolute;left:22px;right:6px;top:22px;height:1px;background:var(--border-soft)}
+
+/* ============ 空状态 ============ */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding:44px 20px;color:var(--muted-fg);gap:10px}
+.empty .art{width:52px;height:52px;opacity:.55}
+
+/* ============ 进度 ============ */
+.bar{height:5px;border-radius:4px;background:var(--muted);overflow:hidden}
+.bar>i{display:block;height:100%;background:var(--primary);border-radius:4px}
+.bar.g>i{background:var(--success)} .bar.w>i{background:var(--warning)}
+
+/* ============ 抽屉 ============ */
+.mask{position:fixed;inset:0;background:rgba(15,23,42,.32);opacity:0;pointer-events:none;
+  transition:opacity .2s;z-index:40}
+.mask.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(920px,88vw);background:var(--bg);
+  border-left:1px solid var(--border);transform:translateX(100%);transition:transform .24s cubic-bezier(.4,0,.2,1);
+  z-index:41;display:flex;flex-direction:column}
+.drawer.on{transform:translateX(0)}
+.drawer-hd{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:14px 18px;
+  border-bottom:1px solid var(--border-soft)}
+.drawer-hd h3{margin:0;font-size:15px;font-weight:600}
+.drawer-hd .x{margin-left:auto}
+.drawer-bd{flex:1;min-height:0;overflow-y:auto;padding:16px 18px}
+.drawer-ft{flex:0 0 auto;display:flex;gap:8px;justify-content:flex-end;padding:12px 18px;
+  border-top:1px solid var(--border-soft)}
+
+/* ============ 三栏对照 ============ */
+.three{display:grid;grid-template-columns:1fr 1fr 300px;gap:10px;align-items:start}
+.pane{border:1px solid var(--border);border-radius:8px;overflow:hidden;background:var(--muted)}
+.pane-hd{display:flex;align-items:center;gap:6px;padding:7px 10px;font-size:12px;color:var(--muted-fg);
+  border-bottom:1px solid var(--border)}
+.pane-bd{padding:10px;font-size:12.5px;line-height:20px;max-height:300px;overflow:auto}
+.code{font-family:"SFMono-Regular",Consolas,Menlo,monospace;font-size:12px;line-height:19px;
+  white-space:pre;color:var(--fg-85)}
+.code .ln{color:hsl(240 4% 55%);user-select:none;display:inline-block;width:26px}
+.code .hl{background:hsl(212 100% 45% / .16);display:block;border-left:2px solid var(--primary);
+  margin-left:-10px;padding-left:8px}
+
+/* ============ 注释模式 ============ */
+.anno{display:none;font-family:"SFMono-Regular",Consolas,monospace;font-size:10px;line-height:14px;
+  padding:0 4px;border-radius:3px;background:hsl(258 90% 68% / .16);color:var(--violet);
+  border:1px solid hsl(258 60% 70% / .55);margin-left:6px;vertical-align:2px;white-space:nowrap}
+body.notes .anno{display:inline-block}
+.spec{display:none;position:fixed;right:0;top:0;bottom:0;width:320px;background:hsl(240 9% 98.4%);
+  border-left:1px solid var(--border);z-index:30;overflow-y:auto;padding:16px}
+body.notes .spec{display:block}
+body.notes .stage{padding-right:320px}
+body.notes .drawer{width:min(760px,calc(88vw - 320px))}
+.spec h4{margin:0 0 4px;font-size:13px;font-weight:600}
+.spec .sec{margin-bottom:16px}
+.spec .sec-t{font-size:11px;letter-spacing:.6px;color:var(--muted-fg);text-transform:uppercase;
+  margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid var(--border-soft)}
+.spec .row{display:flex;gap:8px;margin-bottom:8px;font-size:12px;line-height:18px}
+.spec .row code{flex:0 0 auto;color:var(--violet);font-family:"SFMono-Regular",Consolas,monospace;
+  font-size:11px}
+.spec .row span{color:var(--fg-65)}
+.spec .gap{color:var(--warning);border-left:2px solid hsl(38 80% 45% / .4);padding-left:8px;
+  margin-bottom:9px;font-size:12px;line-height:18px}
+.spec .gap b{color:var(--warning);font-weight:600;display:block;font-size:11px;margin-bottom:2px}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+<g id="i-library"><path d="M4 3h4v18H4zM10 3h4v18h-4zM16 4l3.5 1-3 17-3.5-1z"/></g>
+<g id="i-sparkles"><path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/><path d="M18.5 15.5l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z"/></g>
+<g id="i-chat"><path d="M21 11.5a8.4 8.4 0 01-9 8.4 9.2 9.2 0 01-3.8-.8L3 21l1.9-4.5A8.3 8.3 0 0112 3.1a8.4 8.4 0 019 8.4z"/></g>
+<g id="i-graph"><circle cx="6" cy="6" r="2.6"/><circle cx="18" cy="7" r="2.6"/><circle cx="12" cy="18" r="2.6"/><path d="M8.3 7.3l7.4-.2M7.4 8.3l3.5 7.6M16.7 9.4l-3.3 6.6"/></g>
+<g id="i-upload"><path d="M12 16V4M7 9l5-5 5 5"/><path d="M4 16v2.5A1.5 1.5 0 005.5 20h13a1.5 1.5 0 001.5-1.5V16"/></g>
+<g id="i-list"><path d="M8 6h13M8 12h13M8 18h13M3.5 6h.01M3.5 12h.01M3.5 18h.01"/></g>
+<g id="i-layers"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 13l9 5 9-5M3 17l9 5 9-5"/></g>
+<g id="i-wrench"><path d="M14.7 6.3a4.5 4.5 0 006 6l-8.6 8.6a2.5 2.5 0 01-3.5-3.5z"/><path d="M14.7 6.3l3-3"/></g>
+<g id="i-settings"><circle cx="12" cy="12" r="3.2"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1A1.6 1.6 0 008 19.4a1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H2a2 2 0 110-4h.1A1.6 1.6 0 004.6 8a1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V2a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H22a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/></g>
+<g id="i-search"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5L21 21"/></g>
+<g id="i-bell"><path d="M18 8a6 6 0 10-12 0c0 7-3 8-3 8h18s-3-1-3-8"/><path d="M13.7 21a2 2 0 01-3.4 0"/></g>
+<g id="i-max"><path d="M8 3H5a2 2 0 00-2 2v3M16 3h3a2 2 0 012 2v3M8 21H5a2 2 0 01-2-2v-3M16 21h3a2 2 0 002-2v-3"/></g>
+<g id="i-refresh"><path d="M21 12a9 9 0 11-3.2-6.9M21 3v6h-6"/></g>
+<g id="i-code"><path d="M9 18l-6-6 6-6M15 6l6 6-6 6"/></g>
+<g id="i-file"><path d="M14 3H7a2 2 0 00-2 2v14a2 2 0 002 2h10a2 2 0 002-2V8z"/><path d="M14 3v5h5"/></g>
+<g id="i-db"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6"/><path d="M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6"/></g>
+<g id="i-check"><path d="M4 12.5l5 5L20 6.5"/></g>
+<g id="i-x"><path d="M5 5l14 14M19 5L5 19"/></g>
+<g id="i-alert"><path d="M12 3l9.5 17H2.5z"/><path d="M12 9v5M12 17.2h.01"/></g>
+<g id="i-chev-d"><path d="M6 9l6 6 6-6"/></g>
+<g id="i-chev-r"><path d="M9 6l6 6-6 6"/></g>
+<g id="i-panel"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></g>
+<g id="i-doc"><path d="M4 4h11l5 5v11H4z"/><path d="M7 10h10M7 14h10M7 18h6"/></g>
+<g id="i-play"><path d="M7 4l12 8-12 8z"/></g>
+<g id="i-eye"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></g>
+</defs></svg>
+
+<div class="app">
+  <!-- ========== 侧栏 ========== -->
+  <aside class="rail">
+    <div class="brand">
+      <span class="brand-logo"></span>
+      <span class="brand-name">核心系统迁移知识库</span>
+    </div>
+    <nav class="nav">
+      <div class="nav-grp">
+        <div class="nav-grp-hd" onclick="this.parentNode.classList.toggle('folded')">
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-library"/></svg>
+          <span>知识库</span>
+          <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+        </div>
+        <div class="nav-items">
+          <div class="nav-item" data-go="s7">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-chat"/></svg>
+            问答控制台
+          </div>
+          <div class="nav-item" data-go="s6">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-graph"/></svg>
+            图谱总览
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-grp">
+        <div class="nav-grp-hd" onclick="this.parentNode.classList.toggle('folded')">
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-doc"/></svg>
+          <span>内容管理</span>
+          <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+        </div>
+        <div class="nav-items">
+          <div class="nav-item" data-go="s1">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><use href="#i-upload"/></svg>
+            上传文档
+          </div>
+          <div class="nav-item" data-go="s5">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-list"/></svg>
+            知识库列表
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-grp">
+        <div class="nav-grp-hd" onclick="this.parentNode.classList.toggle('folded')">
+          <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-wrench"/></svg>
+          <span>构建与治理</span>
+          <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+        </div>
+        <div class="nav-items">
+          <div class="nav-item" data-go="s2">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-code"/></svg>
+            内容解析
+          </div>
+          <div class="nav-item" data-go="s3">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-sparkles"/></svg>
+            知识生成
+          </div>
+          <div class="nav-item" data-go="s4">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-check"/></svg>
+            质量核验
+            <span class="dot"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="nav-grp">
+        <div class="nav-items">
+          <div class="nav-item" data-go="s8" style="padding-left:8px">
+            <svg class="ico" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-settings"/></svg>
+            系统状态
+          </div>
+        </div>
+      </div>
+    </nav>
+    <div class="rail-foot">
+      <span style="width:22px;height:22px;border-radius:50%;background:var(--accent);display:grid;place-items:center;font-size:10px">dev</span>
+      <span>dev01 · 研发人员</span>
+    </div>
+  </aside>
+
+  <!-- ========== 主区 ========== -->
+  <div class="stage">
+    <header class="topbar">
+      <div class="crumb">
+        <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><use href="#i-library"/></svg>
+        <span>知识库</span><span class="sep">/</span><b id="cr1">内容管理</b><span class="sep">/</span><b id="cr2">上传文档</b>
+      </div>
+      <div class="topbar-right">
+        <div class="search">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-search"/></svg>
+          搜索
+          <kbd>Ctrl K</kbd>
+        </div>
+        <div class="ibtn" title="通知"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-bell"/></svg></div>
+        <div class="ibtn" title="全屏"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-max"/></svg></div>
+        <div class="ibtn" id="noteBtn" title="切换需求注释（原型专用）" onclick="toggleNotes()">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><use href="#i-panel"/></svg>
+        </div>
+      </div>
+    </header>
+
+    <div class="tabbar" id="tabbar"></div>
+
+    <div class="view" id="view">
+      <div class="view-inner">
+
+<style>
+.drop{border:1px dashed var(--border);border-radius:8px;background:hsl(240 8% 96% / .9);
+  padding:26px 20px;display:flex;flex-direction:column;align-items:center;gap:9px;transition:border-color .15s}
+.drop:hover{border-color:var(--primary)}
+.drop .cloud{width:42px;height:30px;color:var(--fg-85);opacity:.85}
+.drop .t1{font-size:13px;color:var(--fg-85)}
+.fmt{display:grid;grid-template-columns:72px 1fr;gap:7px 10px;margin-top:14px;font-size:12px}
+.fmt .k{color:var(--muted-fg)}
+.fmt .v{color:var(--fg-65)}
+.hint{font-size:11.5px;color:var(--muted-fg);margin:0 0 10px}
+.noteline{display:flex;gap:8px;align-items:flex-start;margin-top:12px;padding:9px 11px;border-radius:7px;
+  background:var(--warning-dim);border:1px solid hsl(38 80% 45% / .3);font-size:12px;line-height:18px;color:hsl(38 78% 28%)}
+.noteline .ico{flex:0 0 14px;margin-top:2px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{height:24px;padding:0 9px;border-radius:6px;border:1px solid var(--border);font-size:12px;
+  color:var(--fg-65);display:inline-flex;align-items:center;cursor:pointer;background:transparent;font-family:inherit}
+.chip:hover{border-color:var(--primary);color:var(--primary)}
+.chip.on{background:hsl(212 90% 95%);border-color:hsl(212 60% 80%);color:hsl(212 100% 36%)}
+.chip.dash{border-style:dashed;color:var(--muted-fg)}
+.tbl-wrap{overflow-x:auto}
+.flag{display:inline-flex;align-items:center;gap:4px}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:11.5px;color:var(--muted-fg);margin-top:10px}
+.legend i{width:8px;height:8px;border-radius:2px;display:inline-block;margin-right:5px;vertical-align:1px}
+</style>
+
+<!-- ==================== 屏 1 · 上传文档（第 4 章 资料导入） ==================== -->
+<section class="scr" id="s1" data-cr1="内容管理" data-cr2="上传文档" data-tab="上传文档">
+  <div class="page-hd">
+    <div>
+      <h1>上传文档</h1>
+      <p>知识库列表 › 上传文档<span class="anno">FR-IMP-01</span></p>
+    </div>
+    <div class="hd-act">
+      <div class="select" style="width:210px"><span>全部知识库名称</span>
+        <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+      </div>
+      <button class="btn"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-refresh"/></svg>刷新清单</button>
+    </div>
+  </div>
+
+  <div class="grid g-2">
+    <!-- 左：上传区 -->
+    <div class="card">
+      <div class="card-hd"><h3>文件上传</h3><span class="anno">FR-IMP-01 / 03</span>
+        <div class="hd-right"><span class="tag o">批次 IMP-20261023-03</span></div>
+      </div>
+      <div class="card-bd">
+        <p class="hint">请确保文件编码为 UTF-8 格式，否则上传后会产生乱码；原始文件将按原编码留存备查</p>
+        <div class="drop">
+          <svg class="cloud" viewBox="0 0 48 34" fill="none" stroke="currentColor" stroke-width="1.6">
+            <path d="M37 26H13a8 8 0 010-16 11 11 0 0121-2 7.5 7.5 0 013 18z"/></svg>
+          <div class="t1">将文件拖拽到此处</div>
+          <button class="btn btn-sm">选择文件</button>
+          <div style="font-size:11.5px;color:var(--muted-fg)">单次上传总量 ≤ 5GB；ZIP 内单文件 ≤ 100MB；子目录深度 ≤ 20</div>
+        </div>
+
+        <div class="fmt">
+          <div class="k">成文文档</div><div class="v">PDF / Word（.docx · .doc · .wps · .rtf）/ 纯文本（.txt · .md）<span class="anno">FR-IMP-01</span></div>
+          <div class="k">表格</div><div class="v">.xlsx / .xls / .csv / .tsv / .et　按工作表与行列抽取<span class="anno">FR-PRS-16</span></div>
+          <div class="k">代码与定义</div><div class="v">COBOL（.cbl）/ copybook（.cpy）/ JCL（.jcl · .prc）</div>
+        </div>
+
+        <div class="noteline">
+          <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-alert"/></svg>
+          <div>另有 13 项格式尚未接入（待支持 12 项、不予解析 1 项）。这类文件<b>仍会被接收并进入导入清单</b>，状态记为「仅入库 · 不进解析」，不会被丢弃，也不会计为导入失败。<span class="anno">FR-IMP-02</span></div>
+        </div>
+
+        <div style="margin-top:14px;border-top:1px solid var(--border-soft);padding-top:12px">
+          <div style="display:flex;justify-content:space-between;font-size:12px;color:var(--muted-fg);margin-bottom:9px">
+            <span>已选文件 <b style="color:var(--fg-85);font-weight:500">6</b> 个</span>
+            <span>共 2.4 MB</span>
+          </div>
+          <div class="chips" style="margin-top:0">
+            <span class="chip mono">CPSGRP.CSD.txt</span>
+            <span class="chip mono">PYMAIN.cbl</span>
+            <span class="chip mono">PYROUTE.cbl</span>
+            <span class="chip mono">PYRECON.jcl</span>
+            <span class="chip mono">跨境汇出接口规范_v3.pdf</span>
+            <span class="chip mono">旧版报表模板.xls</span>
+          </div>
+          <div style="font-size:11px;color:var(--muted-fg);margin-top:9px">
+            老格式（.xls / .doc）与新格式并列接入，同一文档的多格式副本只解析一份<span class="anno">FR-IMP-03 / 20</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：元数据 -->
+    <div class="card">
+      <div class="card-hd"><h3>元数据</h3><span class="anno">FR-IMP-04 / 05</span></div>
+      <div class="card-bd">
+        <div style="font-size:11.5px;color:var(--muted-fg);margin-bottom:12px">本批元数据应用于所有入选文件，归属为必填项</div>
+
+        <div class="field">
+          <label><span class="req">*</span>归属应用系统</label>
+          <div class="select"><span>核心存款系统</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg></div>
+          <div style="display:flex;gap:8px;align-items:center;margin-top:7px">
+            <button class="btn btn-sm btn-ghost" style="padding:0 6px;height:22px">＋ 新建应用系统</button>
+            <span style="font-size:11px;color:var(--muted-fg)">一个文件只归属一个系统</span>
+          </div>
+        </div>
+
+        <div class="field">
+          <label><span class="req">*</span>版本标签</label>
+          <div class="select"><span>v1.0</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg></div>
+        </div>
+
+        <div class="field">
+          <label>安全等级</label>
+          <div class="select"><span>内部</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg></div>
+        </div>
+
+        <div class="field">
+          <label>上传人</label>
+          <div class="input" style="color:var(--muted-fg)">dev01（研发人员）</div>
+        </div>
+
+        <div class="field">
+          <label>标签分类 <span style="color:var(--muted-fg)">取自固定清单，可多选</span></label>
+          <div class="input" style="height:32px;color:var(--muted-fg);margin-bottom:0">搜索标签</div>
+          <div class="chips">
+            <span class="chip on">SWIFT</span>
+            <span class="chip on">MT103</span>
+            <span class="chip">CNAPS</span>
+            <span class="chip">AML</span>
+            <span class="chip">Nostro</span>
+            <span class="chip">CICS</span>
+            <span class="chip">MQ</span>
+            <span class="chip">对账</span>
+            <span class="chip dash">待确定</span>
+          </div>
+          <div style="font-size:11px;color:var(--muted-fg);margin-top:7px">清单里分不出的文件，可置为「待确定」，由审核环节再定</div>
+        </div>
+
+        <label class="chk on" onclick="this.classList.toggle('on')"><i>✓</i>解析完成后自动切片</label>
+
+        <div class="noteline" style="background:var(--accent);border-color:var(--border);color:var(--fg-65);margin-top:14px">
+          <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-eye"/></svg>
+          <div>本阶段只登记归属与标签，不做内容判断；跨系统关联在解析阶段由共享物理数据集得出。<span class="anno">FR-IMP-06</span></div>
+        </div>
+
+        <button class="btn btn-primary btn-block" style="margin-top:14px">开始上传</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 下：导入清单 -->
+  <div class="card">
+    <div class="card-hd">
+      <h3>本批导入清单</h3><span class="sub">批次 IMP-20261023-03 · 共 6 个文件</span><span class="anno">FR-IMP-07 / 08</span>
+      <div class="hd-right">
+        <span class="tag g">已入库 6</span>
+        <span class="tag y">未接入 1</span>
+        <span class="tag">待确定 2</span>
+      </div>
+    </div>
+    <div class="card-bd tight">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th style="width:26%">文件</th><th>类型</th><th>大小</th><th>解析通道</th>
+            <th>归属应用系统</th><th>标签</th><th>状态</th><th style="width:44px"></th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-file"/></svg><span class="mono">CPSGRP.CSD.txt</span></div></td>
+              <td><span class="tag o">Copybook</span></td><td class="num">42 KB</td><td>代码解析</td>
+              <td>核心存款系统</td><td><span class="tag sm b">CICS</span></td>
+              <td><span class="tag g"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><use href="#i-check"/></svg>已入库</span></td>
+              <td><button class="btn btn-sm btn-ghost">明细</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-file"/></svg><span class="mono">PAYMAIN.cbl</span></div></td>
+              <td><span class="tag o">COBOL 程序</span></td><td class="num">186 KB</td><td>代码解析</td>
+              <td>支付结算系统</td><td><span class="tag sm b">MQ</span></td>
+              <td><span class="tag g">已入库</span></td>
+              <td><button class="btn btn-sm btn-ghost">明细</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-file"/></svg><span class="mono">PYROUTE.cbl</span></div></td>
+              <td><span class="tag o">COBOL 程序</span></td><td class="num">94 KB</td><td>代码解析</td>
+              <td>跨境汇出</td><td><span class="tag sm y">待确定</span></td>
+              <td><span class="tag g">已入库</span></td>
+              <td><button class="btn btn-sm btn-ghost">明细</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-file"/></svg><span class="mono">PYRECON.jcl</span></div></td>
+              <td><span class="tag o">JCL</span></td><td class="num">12 KB</td><td>代码解析</td>
+              <td>跨境汇出</td><td><span class="tag sm y">待确定</span></td>
+              <td><span class="tag g">已入库</span></td>
+              <td><button class="btn btn-sm btn-ghost">明细</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-doc"/></svg><span class="mono">跨境汇出接口规范_v3.pdf</span></div></td>
+              <td><span class="tag o">业务文档</span></td><td class="num">2.1 MB</td><td>文档解析</td>
+              <td>跨境汇出</td><td><span class="tag sm b">SWIFT</span><span class="tag sm b" style="margin-left:4px">MT103</span></td>
+              <td><span class="tag g">已入库</span></td>
+              <td><button class="btn btn-sm btn-ghost">明细</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-file"/></svg><span class="mono">旧版报表模板.xls</span></div></td>
+              <td><span class="tag y">未接入格式</span></td><td class="num">780 KB</td><td style="color:var(--muted-fg)">—</td>
+              <td>核心存款系统</td><td><span class="tag sm b">对账</span></td>
+              <td><span class="tag y">仅入库 · 不进解析</span></td>
+              <td><button class="btn btn-sm btn-ghost">明细</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend">
+        <span><i style="background:var(--success)"></i>已入库：原件与转换稿齐备</span>
+        <span><i style="background:var(--warning)"></i>仅入库：格式未接入，不进入解析</span>
+        <span><i style="background:var(--muted-fg)"></i>待确定：标签由人工在审核环节补齐</span>
+        <span style="margin-left:auto">清单状态由解析任务实时回写<span class="anno">FR-IMP-08</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.toolbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:11px}
+.toolbar .sp{margin-left:auto}
+.mini-sel{height:28px;padding:0 9px;border-radius:7px;border:1px solid var(--border);background:transparent;
+  color:var(--fg-65);font-size:12.5px;display:inline-flex;align-items:center;gap:6px;cursor:pointer;font-family:inherit}
+.mini-sel:hover{border-color:var(--primary);color:var(--primary)}
+.mini-sel.on{background:hsl(212 90% 95%);border-color:hsl(212 60% 80%);color:hsl(212 100% 36%)}
+.metric{margin-bottom:14px}
+.metric .mh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.metric .mh b{font-size:13px;font-weight:500;color:var(--fg-85)}
+.metric .mh span{font-size:11.5px;color:var(--muted-fg);margin-left:auto;font-variant-numeric:tabular-nums}
+.metric .mh em{font-style:normal;font-size:12px;color:var(--success);font-variant-numeric:tabular-nums}
+.auto{display:flex;align-items:center;gap:9px;padding:9px 12px;border-radius:8px;margin-bottom:12px;
+  background:var(--primary-dim);border:1px solid hsl(212 60% 82%);font-size:12.5px;color:hsl(212 100% 32%)}
+.hintbar{display:flex;align-items:flex-start;gap:8px;padding:10px 12px;border-radius:8px;margin-top:12px;
+  background:var(--violet-dim);border:1px solid hsl(258 55% 80% / .7);font-size:12px;line-height:18px;
+  color:hsl(258 65% 38%)}
+.hintbar .ico{flex:0 0 14px;margin-top:2px;color:var(--violet)}
+.facts{display:flex;gap:4px;align-items:center}
+.facts i{width:8px;height:8px;border-radius:2px;display:inline-block}
+</style>
+
+<!-- ==================== 屏 2 · 内容解析（第 5 章） ==================== -->
+<section class="scr" id="s2" data-cr1="构建与治理" data-cr2="内容解析" data-tab="内容解析" hidden>
+  <div class="page-hd">
+    <div>
+      <h1>内容解析</h1>
+      <p>批次 PRS-20261023-03 · 128 个文件 · 提交后自动触发<span class="anno">FR-PRS-01</span></p>
+    </div>
+    <div class="hd-act">
+      <button class="btn">按批次重跑<span class="anno">FR-PRS-03</span></button>
+      <button class="btn">按系统重跑</button>
+    </div>
+  </div>
+
+  <div class="auto">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-play"/></svg>
+    批次提交后解析自动开始，以单个文件为执行单元；某一份失败不阻断同批其余文件<span class="anno">FR-PRS-02</span>
+  </div>
+
+  <div class="grid g-4" style="margin-bottom:12px">
+    <div class="kpi"><div class="v">128</div><div class="k">本批文件</div></div>
+    <div class="kpi"><div class="v s">121</div><div class="k">解析完成</div></div>
+    <div class="kpi"><div class="v w">5</div><div class="k">资料不足（已标注）</div></div>
+    <div class="kpi"><div class="v d">2</div><div class="k">解析失败</div></div>
+  </div>
+
+  <div class="grid g-2">
+    <!-- 左：产物清单 -->
+    <div class="card">
+      <div class="card-hd"><h3>解析产物清单</h3><span class="sub">结构事实为结构化数据，不是文档</span><span class="anno">FR-PRS-11</span></div>
+      <div class="card-bd tight">
+        <div class="toolbar">
+          <button class="mini-sel on">代码通道 47</button>
+          <button class="mini-sel">文档通道 81</button>
+          <button class="mini-sel">仅看资料不足 5</button>
+          <div class="sp"></div>
+          <button class="mini-sel">筛选</button>
+        </div>
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr>
+              <th style="width:27%">文件</th><th>通道</th><th>结构事实</th><th>覆盖率</th><th>状态</th><th style="width:96px">操作</th>
+            </tr></thead>
+            <tbody>
+              <tr>
+                <td class="mono">PYMAIN.cbl</td><td>代码</td>
+                <td><div class="facts"><i style="background:var(--success)"></i><i style="background:var(--success)"></i><i style="background:var(--success)"></i><span style="font-size:11.5px;color:var(--muted-fg);margin-left:4px">3 / 3</span></div></td>
+                <td class="num">100%</td><td><span class="tag g">已解析</span></td>
+                <td><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-s2')">查看对照</button></td>
+              </tr>
+              <tr>
+                <td class="mono">CPSGRP.CSD.txt</td><td>代码</td>
+                <td><div class="facts"><i style="background:var(--success)"></i><span style="font-size:11.5px;color:var(--muted-fg);margin-left:4px">字段 · 记录</span></div></td>
+                <td class="num">—</td><td><span class="tag g">已解析</span></td>
+                <td><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-s2')">查看对照</button></td>
+              </tr>
+              <tr>
+                <td class="mono">PYRECON.jcl</td><td>代码</td>
+                <td><div class="facts"><i style="background:var(--success)"></i><i style="background:var(--warning)"></i><span style="font-size:11.5px;color:var(--muted-fg);margin-left:4px">作业链路 · DD</span></div></td>
+                <td class="num">92%</td><td><span class="tag y">资料不足</span></td>
+                <td><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-s2')">查看对照</button></td>
+              </tr>
+              <tr>
+                <td class="mono">PYROUTE.cbl</td><td>代码</td>
+                <td><div class="facts"><i style="background:var(--success)"></i><i style="background:var(--success)"></i><i style="background:var(--success)"></i><span style="font-size:11.5px;color:var(--muted-fg);margin-left:4px">3 / 3</span></div></td>
+                <td class="num">100%</td><td><span class="tag g">已解析</span></td>
+                <td><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-s2')">查看对照</button></td>
+              </tr>
+              <tr>
+                <td class="mono">PYPROC.INBOUND.jcl</td><td>代码</td>
+                <td><span style="font-size:11.5px;color:var(--muted-fg)">—</span></td>
+                <td class="num">—</td><td><span class="tag r">解析失败</span></td>
+                <td><button class="btn btn-sm btn-ghost" style="color:var(--primary)">单文件重跑</button></td>
+              </tr>
+              <tr>
+                <td class="mono">渠道限额参数.xlsx</td><td>表格</td>
+                <td><div class="facts"><i style="background:var(--success)"></i><i style="background:var(--success)"></i><span style="font-size:11.5px;color:var(--muted-fg);margin-left:4px">2 表 · 348 行</span></div></td>
+                <td class="num">100%</td><td><span class="tag g">已解析</span></td>
+                <td><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-s2')">查看对照</button></td>
+              </tr>
+              <tr>
+                <td class="mono">跨境汇出接口规范_v3.pdf</td><td>文档</td>
+                <td><span style="font-size:11.5px;color:var(--muted-fg)">定位块 214</span></td>
+                <td class="num">—</td><td><span class="tag g">已解析</span></td>
+                <td><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-s2')">查看对照</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：覆盖率 + 通道 -->
+    <div>
+      <div class="card">
+        <div class="card-hd"><h3>本批覆盖率</h3><span class="anno">FR-PRS-13</span></div>
+        <div class="card-bd">
+          <div class="metric">
+            <div class="mh"><b>程序解析覆盖率</b><em>94.5%</em><span>121 / 128</span></div>
+            <div class="bar g"><i style="width:94.5%"></i></div>
+          </div>
+          <div class="metric">
+            <div class="mh"><b>字段覆盖率</b><em>87.0%</em><span>1 842 / 2 118</span></div>
+            <div class="bar g"><i style="width:87%"></i></div>
+          </div>
+          <div class="metric" style="margin-bottom:0">
+            <div class="mh"><b>DD 映射率</b><em style="color:var(--warning)">92.0%</em><span>逻辑名 46 / 物理 50</span></div>
+            <div class="bar w"><i style="width:92%"></i></div>
+          </div>
+          <div class="divider"></div>
+          <div style="font-size:11.5px;color:var(--muted-fg);line-height:18px">
+            分母口径：程序解析覆盖率按<span style="color:var(--fg-65)">文件数</span>，字段与 DD 映射按<span style="color:var(--fg-65)">条目数</span>。未接入格式不计入分母。
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h3>通道与分工</h3></div>
+        <div class="card-bd">
+          <div style="font-size:12px;color:var(--fg-65);line-height:19px">
+            代码走代码通道，按文件类型分工产出结构事实，不是每份文件各出一套：<span class="anno">FR-PRS-06</span>
+          </div>
+          <div style="margin-top:11px;font-size:12.5px;line-height:21px">
+            <div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-soft)">
+              <span style="flex:0 0 96px;color:var(--muted-fg)">COBOL / C</span>
+              <span style="color:var(--fg-65)">段落 · 调用 · 文件访问（逻辑名）</span>
+            </div>
+            <div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-soft)">
+              <span style="flex:0 0 96px;color:var(--muted-fg)">Copybook</span>
+              <span style="color:var(--fg-65)">字段与记录</span>
+            </div>
+            <div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-soft)">
+              <span style="flex:0 0 96px;color:var(--muted-fg)">JCL</span>
+              <span style="color:var(--fg-65)">作业链路 + DD 映射</span>
+            </div>
+            <div style="display:flex;gap:8px;padding:6px 0;border-bottom:1px solid var(--border-soft)">
+              <span style="flex:0 0 96px;color:var(--muted-fg)">表格</span>
+              <span style="color:var(--fg-65)">工作表 · 表头 · 单元格区间（第六类事实）</span>
+            </div>
+            <div style="display:flex;gap:8px;padding:6px 0">
+              <span style="flex:0 0 96px;color:var(--muted-fg)">PDF / Word</span>
+              <span style="color:var(--fg-65)">带定位符的文本块，无结构事实</span>
+            </div>
+          </div>
+          <div class="hintbar">
+            <svg class="ico" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-alert"/></svg>
+            <div>某类来源不存在时（如只有源码、没有 JCL），该类标注「资料不足」，不判解析失败<span class="anno">FR-PRS-08</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 归属相关性提示 -->
+  <div class="card">
+    <div class="card-hd"><h3>归属相关性提示</h3><span class="sub">解析完成后比对共享数据集，供人工复核</span><span class="anno">FR-PRS-14</span></div>
+    <div class="card-bd">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr><th style="width:22%">当前归属</th><th style="width:26%">共享物理数据集</th><th>访问方</th><th style="width:120px">提示</th><th style="width:120px"></th></tr></thead>
+          <tbody>
+            <tr>
+              <td>跨境汇出</td>
+              <td class="mono">DS_PY_NOSTRO</td>
+              <td>PYROUTE.cbl（跨境汇出）· PYMAIN.cbl（支付结算系统）</td>
+              <td><span class="tag v">可能跨系统</span></td>
+              <td><button class="btn btn-sm">提交归属复核</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="font-size:11.5px;color:var(--muted-fg);margin-top:9px">提示只是线索，不自动改归属；归属变更需人工确认并留痕。</div>
+    </div>
+  </div>
+</section>
+
+<style>
+.scopebar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:12px 16px;border:1px solid var(--border);
+  border-radius:var(--r-card);background:var(--card);margin-bottom:12px}
+.scopebar .lb{font-size:12.5px;color:var(--muted-fg)}
+.qitem{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;font-size:12.5px;
+  cursor:pointer;border:1px solid transparent}
+.qitem:hover{background:var(--accent)}
+.qitem.on{background:var(--accent);border-color:var(--border)}
+.qitem .nm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.qitem .st{width:7px;height:7px;border-radius:50%;flex:0 0 7px}
+.doc{font-size:13px;line-height:21px;color:var(--fg-85)}
+.doc-hd{padding-bottom:12px;border-bottom:1px solid var(--border-soft);margin-bottom:4px}
+.doc-hd h2{margin:0;font-size:17px;line-height:24px;font-weight:600;color:var(--fg)}
+.doc-hd .meta{display:flex;gap:8px;align-items:center;margin-top:8px;flex-wrap:wrap}
+.sec-i{border-bottom:1px solid var(--border-soft)}
+.sec-i:last-child{border-bottom:0}
+.sec-h{display:flex;align-items:center;gap:8px;padding:11px 2px;cursor:pointer;user-select:none}
+.sec-h .n{width:18px;height:18px;border-radius:5px;background:var(--muted);display:grid;place-items:center;
+  font-size:11px;color:var(--muted-fg);flex:0 0 18px}
+.sec-h .t{font-weight:500;font-size:13px;color:var(--fg)}
+.sec-h .caret{margin-left:auto;color:var(--muted-fg);transition:transform .16s}
+.sec-i.cl .caret{transform:rotate(-90deg)}
+.sec-i.cl .sec-b{display:none}
+.sec-b{padding:0 2px 14px 26px;color:var(--fg-65)}
+.sec-b p{margin:0 0 9px}
+.lack{display:inline-flex;align-items:center;gap:5px;font-size:11px;padding:1px 7px;border-radius:5px;
+  background:var(--warning-dim);color:var(--warning);border:1px solid hsl(38 80% 45% / .3)}
+.ph{border:1px dashed hsl(258 55% 78% / .8);background:hsl(258 90% 68% / .07);border-radius:7px;
+  padding:9px 11px;font-size:12px;color:hsl(258 65% 40%);line-height:18px}
+.ph b{font-weight:600}
+.src{font-size:11px;color:var(--muted-fg);border:1px solid var(--border-soft);border-radius:4px;
+  padding:0 5px;margin-left:6px;white-space:nowrap}
+.src.l1{color:hsl(212 100% 34%);border-color:hsl(212 60% 82%)}
+.src.l3{color:var(--violet);border-color:hsl(258 55% 82%)}
+</style>
+
+<!-- ==================== 屏 3 · 知识生成（第 6 章） ==================== -->
+<section class="scr" id="s3" data-cr1="构建与治理" data-cr2="知识生成" data-tab="知识生成" hidden>
+  <div class="page-hd">
+    <div>
+      <h1>知识生成</h1>
+      <p>按范围手动触发 · 以对象为单位异步生成<span class="anno">FR-GEN-01 / 02</span></p>
+    </div>
+    <div class="hd-act">
+      <button class="btn">查看两层生成报告<span class="anno">FR-GEN-16</span></button>
+      <button class="btn btn-primary">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><use href="#i-play"/></svg>
+        生成本轮范围
+      </button>
+    </div>
+  </div>
+
+  <div class="scopebar">
+    <span class="lb">生成范围</span>
+    <button class="mini-sel">应用系统</button>
+    <button class="mini-sel on">程序清单</button>
+    <button class="mini-sel">单程序</button>
+    <span style="width:1px;height:18px;background:var(--border);margin:0 4px"></span>
+    <span class="mono" style="font-size:12px;color:var(--fg-65)">跨境汇出 · 6 个程序 + 1 个作业</span>
+    <span style="margin-left:auto;display:flex;gap:8px">
+      <span class="tag g">已完成 5</span><span class="tag b">生成中 1</span><span class="tag">排队 1</span>
+    </span>
+  </div>
+
+  <div class="grid g-2b">
+    <!-- 左：队列 -->
+    <div>
+      <div class="card">
+        <div class="card-hd"><h3>本轮范围</h3></div>
+        <div class="card-bd" style="padding:12px">
+          <div style="font-size:12px;color:var(--fg-65);line-height:19px">
+            范围内全量成文；范围外被引用的对象只写<b style="color:var(--violet);font-weight:500">占位引用</b>，不展开生成。<span class="anno">FR-GEN-03</span>
+          </div>
+          <div class="divider" style="margin:11px 0"></div>
+          <div style="display:flex;flex-direction:column;gap:4px;font-size:12.5px">
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted-fg)">程序</span><b>6 份</b></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted-fg)">作业说明</span><b>1 份</b></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--muted-fg)">数据实体说明</span><b>3 份</b></div>
+            <div style="display:flex;justify-content:space-between"><span style="color:var(--violet)">范围外占位引用</span><b style="color:var(--violet)">2 个</b></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h3>生成队列</h3><span class="sub">5 / 10</span></div>
+        <div class="card-bd" style="padding:8px">
+          <div class="qitem on"><span class="st" style="background:var(--primary)"></span><span class="nm mono">PYMAIN.cbl</span><span class="tag sm g">v3</span></div>
+          <div class="qitem"><span class="st" style="background:var(--success)"></span><span class="nm mono">PYROUTE.cbl</span><span class="tag sm g">v2</span></div>
+          <div class="qitem"><span class="st" style="background:var(--violet)"></span><span class="nm mono">PYRECON.jcl</span><span class="tag sm b">生成中</span></div>
+          <div class="qitem"><span class="st" style="background:var(--muted-fg)"></span><span class="nm mono">DS_PY_NOSTRO</span><span class="tag sm">排队</span></div>
+          <div class="qitem"><span class="st" style="background:var(--success)"></span><span class="nm mono">PYVAL.cbl</span><span class="tag sm g">v1</span></div>
+          <div class="qitem"><span class="st" style="background:var(--danger)"></span><span class="nm mono">PYPOST.cbl</span><span class="tag sm r">失败</span></div>
+        </div>
+        <div class="card-bd" style="padding:0 14px 14px">
+          <div style="font-size:11.5px;color:var(--muted-fg);line-height:17px">失败不影响同批其他对象；单个对象可重新生成，旧版本保留。<span class="anno">FR-GEN-04 / 05</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右：文档阅读 -->
+    <div class="card">
+      <div class="card-hd">
+        <h3>PYMAIN.cbl · 知识文档</h3>
+        <div class="hd-right">
+          <span class="tag o">v3</span><span class="tag b">已审核 L2</span>
+          <button class="btn btn-sm">导出</button>
+        </div>
+      </div>
+      <div class="card-bd" style="max-height:660px;overflow-y:auto">
+        <div class="doc">
+          <div class="doc-hd">
+            <h2>支付报文主处理程序</h2>
+            <div class="meta">
+              <span class="tag o">跨境汇出</span>
+              <span class="tag o">COBOL · 1 246 行</span>
+              <span class="tag o">生成于 10-23 11:42</span>
+              <span style="font-size:11.5px;color:var(--muted-fg)">结构事实为硬输入，本节内容不改写事实<span class="anno">FR-GEN-18</span></span>
+            </div>
+          </div>
+
+          <div class="sec-i"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">1</span><span class="t">程序定位与用途</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>接收 MQ 入站的跨境汇出报文，完成字段校验与账户行路由后写入发送队列。</p></div></div>
+
+          <div class="sec-i"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">2</span><span class="t">业务职责</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>承担跨境汇出交易的入站受理与合规校验前置，不含账务记账。<span class="src l3">L3 模型生成</span></p></div></div>
+
+          <div class="sec-i"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">3</span><span class="t">输入输出</span><span class="lack">1 项占位</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b">
+            <table class="tbl" style="font-size:12px;margin-bottom:10px">
+              <thead><tr><th>逻辑名</th><th>物理数据集</th><th>方式</th><th>用途</th></tr></thead>
+              <tbody>
+                <tr><td class="mono">PARMFILE</td><td class="mono">DS_PY_PARMFILE</td><td><span class="tag sm b">读</span></td><td>读取上限值与业务日期</td></tr>
+                <tr><td class="mono">NOSTRO</td><td class="mono">DS_PY_NOSTRO</td><td><span class="tag sm v">读 / 更新</span></td><td>账户行路由与余额判断</td></tr>
+                <tr><td class="mono">MQ_IN</td><td class="mono">MQ.CROSSBORDER.IN</td><td><span class="tag sm b">读</span></td><td>入站报文来源</td></tr>
+              </tbody>
+            </table>
+            <div class="ph"><b>占位引用 · 未在本轮范围</b><br>
+              DS_PY_NOSTRO 的数据实体说明尚未生成本轮。此处只保留对象名、键值与出处位置，纳入范围后回填字段口径与访问矩阵。<span class="anno">FR-GEN-03</span></div>
+          </div></div>
+
+          <div class="sec-i"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">4</span><span class="t">处理流程</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>流程图节点只取自解析出的段落与调用关系，不新增图中不存在的步骤。<span class="anno">FR-GEN-10</span></p></div></div>
+
+          <div class="sec-i cl"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">5</span><span class="t">数据实体与字段</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>字段含义取自 copybook 与规则表；跨程序口径冲突并列保留。</p></div></div>
+
+          <div class="sec-i"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">6</span><span class="t">业务规则</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b">
+            <table class="tbl" style="font-size:12px">
+              <thead><tr><th>条件</th><th>动作</th><th>依据</th><th>来源</th></tr></thead>
+              <tbody>
+                <tr><td>金额 &gt; 50 000 USD</td><td>转人工复核队列</td><td class="mono">PYMAIN:1240</td><td><span class="src l1">L1</span></td></tr>
+                <tr><td>收款行未在 NOSTRO 列表</td><td>拒绝并回执</td><td class="mono">PYMAIN:1312</td><td><span class="src l1">L1</span></td></tr>
+              </tbody>
+            </table>
+          </div></div>
+
+          <div class="sec-i cl"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">7</span><span class="t">异常与错误处理</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>…</p></div></div>
+
+          <div class="sec-i"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">8</span><span class="t">疑点与待确认</span><span class="tag sm y" style="margin-left:6px">3 条</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>两处规则对同一字段给出不同阈值，已并列保留并进入疑点清单，不自动择优。<span class="anno">FR-GEN-20</span></p></div></div>
+
+          <div class="sec-i cl"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">9</span><span class="t">依赖与调用关系</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>…</p></div></div>
+
+          <div class="sec-i cl"><div class="sec-h" onclick="this.parentNode.classList.toggle('cl')">
+            <span class="n">10</span><span class="t">变更影响范围</span>
+            <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg>
+          </div><div class="sec-b"><p>…</p></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.segzone{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.zbtn{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 13px;border-radius:8px;
+  border:1px solid var(--border);background:transparent;font-size:12.5px;color:var(--fg-65);cursor:pointer;font-family:inherit}
+.zbtn b{font-variant-numeric:tabular-nums;color:var(--fg-85);font-weight:600}
+.zbtn.on{background:var(--accent);border-color:hsl(212 60% 80%);color:var(--fg)}
+.zbtn.on b{color:var(--primary)}
+.zbtn .qq{width:6px;height:6px;border-radius:50%;background:var(--warning)}
+.impact{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--fg-65)}
+.impact b{color:var(--warning);font-weight:600}
+.act-row{display:flex;gap:6px;justify-content:flex-end}
+.reason{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+</style>
+
+<!-- ==================== 屏 4 · 治理工作台（第 7 章 人工审核） ==================== -->
+<section class="scr" id="s4" data-cr1="构建与治理" data-cr2="治理工作台" data-tab="治理工作台" hidden>
+  <div class="page-hd">
+    <div>
+      <h1>质量核验</h1>
+      <p>抽检样本 128 条 · 按影响面分三层取不同比例<span class="anno">FR-REV-07</span></p>
+    </div>
+    <div class="hd-act">
+      <button class="btn">标记原因统计<span class="anno">FR-REV-14</span></button>
+      <button class="btn">抽检比例设置<span class="anno">FR-REV-22</span></button>
+    </div>
+  </div>
+
+  <!-- 状态分区 -->
+  <div class="segzone">
+    <button class="zbtn on">全部 <b>128</b></button>
+    <button class="zbtn">可取用 <b>119</b><span class="anno">FR-GEN-27</span></button>
+    <button class="zbtn">已修正 <b>3</b></button>
+    <button class="zbtn">有争议 <b>6</b><span class="qq"></span></button>
+    <button class="zbtn">已废止 <b>0</b><span class="anno">FR-REV-11</span></button>
+    <span style="margin-left:auto;display:flex;gap:6px">
+      <button class="mini-sel">内容类型：全部</button>
+      <button class="mini-sel">来源级别：全部</button>
+      <button class="mini-sel">仅看核验不成立 3</button>
+    </span>
+  </div>
+
+  <div class="card">
+    <div class="card-hd">
+      <h3>核验与抽检清单</h3><span class="sub">生成即为「可取用」，无需放行；点开一条进入详情，三栏对照在该处展开</span><span class="anno">FR-REV-01 / 02</span>
+      <div class="hd-right"><span class="tag">共 128</span><span class="tag g">待人工处置 9</span></div>
+    </div>
+    <div class="card-bd tight">
+      <div class="tbl-wrap">
+        <table class="tbl">
+          <thead><tr>
+            <th style="width:22%">对象</th><th>内容类型</th><th>通道</th><th>影响面</th><th>核验</th><th>来源级别</th><th>状态</th><th style="width:158px"></th>
+          </tr></thead>
+          <tbody>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-code"/></svg><span class="mono">PYMAIN.cbl</span></div>
+                <div style="font-size:11px;color:var(--muted-fg);margin-left:19px">支付报文主处理程序</div></td>
+              <td><span class="tag o">程序文档</span></td>
+              <td><span class="tag sm">索引 4 · 解释 5</span></td>
+              <td><span class="impact">下游 <b>12</b> 个程序</span></td>
+              <td><span class="tag g">6 / 6 成立</span></td>
+              <td><span class="tag v">L3</span></td>
+              <td><span class="tag g">可取用</span></td>
+              <td class="act-row">
+                <button class="btn btn-sm" onclick="showDrawer('dw-rev')">查看</button>
+                <button class="btn btn-sm btn-ghost">标记有误</button>
+              </td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-db"/></svg><span class="mono">DS_PY_NOSTRO</span></div>
+                <div style="font-size:11px;color:var(--muted-fg);margin-left:19px">往账账户行数据集</div></td>
+              <td><span class="tag o">实体说明</span></td>
+              <td><span class="tag sm">索引</span></td>
+              <td><span class="impact">访问程序 <b>7</b> 个</span></td>
+              <td><span class="tag g">6 / 6 成立</span></td>
+              <td><span class="tag g">L1a</span></td>
+              <td><span class="tag g">可取用</span></td>
+              <td class="act-row"><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-rev')">查看</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-code"/></svg><span class="mono">PYROUTE.cbl</span></div>
+                <div style="font-size:11px;color:var(--muted-fg);margin-left:19px">账户行路由</div></td>
+              <td><span class="tag o">程序文档</span></td>
+              <td><span class="tag sm">索引 4 · 解释 5</span></td>
+              <td><span class="impact">下游 <b>4</b> 个程序</span></td>
+              <td><span class="tag r">5 / 6 · 1 项不成立</span></td>
+              <td><span class="tag r">L4</span></td>
+              <td><span class="tag g">可取用</span></td>
+              <td class="act-row"><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-rev')">查看</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-alert"/></svg><span>金额阈值规则冲突</span></div>
+                <div style="font-size:11px;color:var(--muted-fg);margin-left:19px">疑点 · 涉及 2 个程序</div></td>
+              <td><span class="tag o">疑点</span></td>
+              <td><span class="tag sm">解释</span></td>
+              <td><span class="impact">规则 <b>2</b> 条</span></td>
+              <td><span style="font-size:11.5px;color:var(--muted-fg)">不适用</span></td>
+              <td><span class="tag v">L3</span></td>
+              <td><span class="tag y">有争议</span></td>
+              <td class="act-row"><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-rev')">查看</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-code"/></svg><span class="mono">PYVAL.cbl</span></div>
+                <div style="font-size:11px;color:var(--muted-fg);margin-left:19px">报文校验</div></td>
+              <td><span class="tag o">程序文档</span></td>
+              <td><span class="tag sm">索引 4 · 解释 5</span></td>
+              <td><span class="impact">下游 <b>2</b> 个程序</span></td>
+              <td><span class="tag g">6 / 6 成立</span></td>
+              <td><span class="tag b">L2</span></td>
+              <td><span class="tag b">已修正</span></td>
+              <td class="act-row"><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-rev')">查看</button></td>
+            </tr>
+            <tr>
+              <td><div class="flag"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="var(--muted-fg)" stroke-width="1.7"><use href="#i-code"/></svg><span class="mono">PYPOST.cbl</span></div>
+                <div style="font-size:11px;color:var(--muted-fg);margin-left:19px">入账处理</div></td>
+              <td><span class="tag o">程序文档</span></td>
+              <td><span class="tag sm">索引 4 · 解释 5</span></td>
+              <td><span class="impact">下游 <b>9</b> 个程序</span></td>
+              <td><span class="tag r">3 / 6 · 3 项不成立</span></td>
+              <td><span class="tag r">L4</span></td>
+              <td><span class="tag y">有争议</span></td>
+              <td class="act-row"><button class="btn btn-sm btn-ghost" onclick="showDrawer('dw-rev')">查看</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="legend" style="margin-top:11px">
+        <span><span class="tag g">可取用</span> 生成完成即为默认态，不需要人放行<span class="anno">FR-GEN-27</span></span>
+        <span><span class="tag b">已修正</span> 有人修正并确认，来源级别升 L2</span>
+        <span><span class="tag y">有争议</span> 被标记有误且原因成立，不进回答依据</span>
+        <span><span class="tag r">已废止</span> 下线，不再进入检索</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- 底部：统计 -->
+  <div class="grid g-3" style="margin-top:12px">
+    <div class="card"><div class="card-bd">
+      <div style="font-size:12.5px;color:var(--muted-fg);margin-bottom:10px">标记原因分布（运行期反馈）<span class="anno">FR-REV-14</span></div>
+      <div class="metric"><div class="mh"><b>结论与源码不符</b><span>3</span></div><div class="bar w"><i style="width:50%"></i></div></div>
+      <div class="metric"><div class="mh"><b>字段口径错误</b><span>2</span></div><div class="bar w"><i style="width:33%"></i></div></div>
+      <div class="metric" style="margin-bottom:0"><div class="mh"><b>出处定位失效</b><span>1</span></div><div class="bar w"><i style="width:17%"></i></div></div>
+    </div></div>
+    <div class="card"><div class="card-bd">
+      <div style="font-size:12.5px;color:var(--muted-fg);margin-bottom:10px">按影响面分层抽检<span class="anno">FR-REV-07</span></div>
+      <div style="font-size:12.5px;line-height:26px">
+        <div style="display:flex;justify-content:space-between"><span>高影响 <span class="tag sm r">全查</span></span><b>18</b></div>
+        <div style="display:flex;justify-content:space-between"><span>中影响 <span class="tag sm y">20%</span></span><b>22</b></div>
+        <div style="display:flex;justify-content:space-between"><span>低影响 <span class="tag sm g">5%</span></span><b>5</b></div>
+        <div style="display:flex;justify-content:space-between;color:var(--muted-fg)"><span>不符比例上限</span><b style="font-weight:400">5% / 10% / 15%</b></div>
+      </div>
+    </div></div>
+    <div class="card"><div class="card-bd">
+      <div style="font-size:12.5px;color:var(--muted-fg);margin-bottom:10px">未核实内容的可用范围</div>
+      <div style="font-size:12px;line-height:19px;color:var(--fg-65)">
+        L1a／L1b／L2 可直接构成结论；<b style="color:var(--fg-85);font-weight:500">L3</b> 可进依据，但「模型生成·未核实」须与结论同屏；
+        <b style="color:var(--fg-85);font-weight:500">L4</b> 标「仅供参考」，不单独构成口径结论。<span class="anno">FR-REV-12</span>
+      </div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ============ 抽屉：审核详情（三栏对照） ============ -->
+<div class="drawer" id="dw-rev">
+  <div class="drawer-hd">
+    <h3>PYMAIN.cbl · 支付报文主处理程序</h3>
+    <span class="tag o">v3</span><span class="tag g">可取用</span><span class="tag y">模型生成·未核实</span>
+    <span class="x"><button class="btn btn-sm btn-ghost" onclick="hideDrawer('dw-rev')">✕</button></span>
+  </div>
+  <div class="drawer-bd">
+    <div style="display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap">
+      <span class="tag g">核验 6 / 6 成立</span>
+      <span class="tag o">影响面：12 个下游程序</span>
+      <span class="tag v">来源级别 L3 · 未核实</span>
+      <span style="margin-left:auto;font-size:11.5px;color:var(--muted-fg)">三栏说明：左为原件，中为结构事实，右为生成结论<span class="anno">FR-REV-02</span></span>
+    </div>
+
+    <div class="three">
+      <div class="pane">
+        <div class="pane-hd"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-code"/></svg>原件 · PYMAIN.cbl 1236-1248</div>
+        <div class="pane-bd"><div class="code"><span class="ln">1236</span>       IF WS-AMT &gt; WS-LIMIT
+<span class="ln">1237</span><span class="hl">          MOVE 'R' TO WS-ROUTE-FLAG</span>
+<span class="ln">1238</span><span class="hl">          PERFORM 9000-MANUAL-REVIEW</span>
+<span class="ln">1239</span>       ELSE
+<span class="ln">1240</span>          PERFORM 8000-ROUTE-NOSTRO
+<span class="ln">1241</span>       END-IF.</div></div>
+      </div>
+      <div class="pane">
+        <div class="pane-hd"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-db"/></svg>结构事实 · 段落与调用</div>
+        <div class="pane-bd"><div class="code">{ "para": "1000-MAIN",
+  "calls": ["9000-MANUAL-REVIEW",
+            "8000-ROUTE-NOSTRO"],
+  "cond": "WS-AMT &gt; WS-LIMIT",
+  "lines": [1236, 1241] }</div></div>
+      </div>
+      <div class="pane">
+        <div class="pane-hd"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><use href="#i-sparkles"/></svg>生成结论</div>
+        <div class="pane-bd">
+          金额超过上限时置路由标志为 R 并转人工复核，否则按账户行走路由。
+          <div style="margin-top:8px;display:flex;gap:5px;flex-wrap:wrap">
+            <span class="tag sm v">L3 · 未核实</span><span class="tag sm g">置信度 0.93</span>
+          </div>
+          <div style="margin-top:9px;font-size:11.5px;color:var(--muted-fg);line-height:17px">出处：PYMAIN.cbl:1236-1241</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div style="font-size:12.5px;color:var(--muted-fg);margin-bottom:8px">处置动作（四类，任何有访问权的人均可发起）<span class="anno">FR-REV-03</span></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button class="btn btn-primary" onclick="hideDrawer('dw-rev')">修正并确认（升 L2）</button>
+      <button class="btn" style="color:var(--danger);border-color:hsl(348 55% 80%)" onclick="document.getElementById('rj').style.display='block'">标记有误</button>
+      <button class="btn">辩驳</button>
+      <button class="btn">废止</button>
+    </div>
+
+    <div id="rj" style="display:none;margin-top:14px;border:1px solid var(--border);border-radius:8px;padding:12px">
+      <div style="font-size:12.5px;color:var(--fg-85);margin-bottom:8px">标记原因（必填）<span class="anno">FR-REV-04</span></div>
+      <div class="reason">
+        <span class="chip on">结论与源码不符</span><span class="chip">字段口径错误</span>
+        <span class="chip">出处定位失效</span><span class="chip">规则阈值有误</span>
+      </div>
+      <div class="input" style="margin-top:9px;height:56px;align-items:flex-start;padding-top:7px;color:var(--muted-fg)">补充说明（选填）</div>
+      <div style="display:flex;gap:8px;margin-top:10px;justify-content:flex-end">
+        <button class="btn btn-sm btn-ghost" onclick="document.getElementById('rj').style.display='none'">取消</button>
+        <button class="btn btn-sm btn-primary" onclick="hideDrawer('dw-rev')">提交标记</button>
+      </div>
+    </div>
+  </div>
+  <div class="drawer-ft">
+    <span style="margin-right:auto;font-size:11.5px;color:var(--muted-fg)">所有处置动作留痕：人、时间、动作、原因<span class="anno">FR-REV-13</span></span>
+    <button class="btn" onclick="hideDrawer('dw-rev')">关闭</button>
+  </div>
+</div>
+
+<style>
+.libcard{border:1px solid var(--border);border-radius:var(--r-card);padding:14px 15px;background:var(--card);
+  cursor:pointer;transition:border-color .15s}
+.libcard:hover{border-color:hsl(212 60% 80%)}
+.libcard .lt{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:500;color:var(--fg)}
+.libcard .ln{font-size:11.5px;color:var(--muted-fg);margin-top:3px}
+.libcard .lrow{display:flex;gap:14px;margin-top:12px}
+.libcard .lrow div{flex:1}
+.libcard .lrow b{display:block;font-size:17px;font-variant-numeric:tabular-nums;font-weight:600;color:var(--fg-85)}
+.libcard .lrow span{font-size:11px;color:var(--muted-fg)}
+.stor{display:flex;gap:10px}
+.stor .s{flex:1;border:1px solid var(--border-soft);border-radius:8px;padding:10px 12px;background:var(--muted)}
+.stor .s .k{font-size:11px;color:var(--muted-fg);margin-bottom:3px}
+.stor .s .v{font-size:13px;color:var(--fg-85);font-weight:500}
+</style>
+
+<!-- ==================== 屏 5 · 知识库列表 / 入库（第 8 章） ==================== -->
+<section class="scr" id="s5" data-cr1="内容管理" data-cr2="知识库列表" data-tab="知识库列表" hidden>
+  <div class="page-hd">
+    <div>
+      <h1>知识库列表</h1>
+      <p>入库结果 · 三类存储分工，内容写入即可检索；切片、向量与图谱的落地状态可逐项核对<span class="anno">FR-STO-01 / 04 / 17</span></p>
+    </div>
+    <div class="hd-act">
+      <button class="btn">按来源级别过滤<span class="anno">FR-STO-05</span></button>
+      <button class="btn">重建索引（受阈值触发）<span class="anno">FR-STO-20</span></button>
+    </div>
+  </div>
+
+  <div class="grid g-4" style="margin-bottom:12px">
+    <div class="kpi"><div class="v">3 412</div><div class="k">图谱节点</div></div>
+    <div class="kpi"><div class="v">6 087</div><div class="k">关系边</div></div>
+    <div class="kpi"><div class="v">18 240</div><div class="k">向量切片</div></div>
+    <div class="kpi"><div class="v w">18%</div><div class="k">L3／L4 占比</div></div>
+  </div>
+
+  <div class="grid g-3">
+    <div class="libcard">
+      <div class="lt"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><use href="#i-db"/></svg>核心存款系统</div>
+      <div class="ln">v2 · 最后入库 10-22 18:04</div>
+      <div class="lrow"><div><b>1 204</b><span>节点</span></div><div><b>6 810</b><span>切片</span></div><div><b>91%</b><span>可用</span></div></div>
+      <div class="bar g" style="margin-top:11px"><i style="width:91%"></i></div>
+    </div>
+    <div class="libcard">
+      <div class="lt"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><use href="#i-db"/></svg>支付结算系统</div>
+      <div class="ln">v3 · 最后入库 10-23 11:47</div>
+      <div class="lrow"><div><b>1 386</b><span>节点</span></div><div><b>7 902</b><span>切片</span></div><div><b>70%</b><span>可用</span></div></div>
+      <div class="bar w" style="margin-top:11px"><i style="width:70%"></i></div>
+    </div>
+    <div class="libcard">
+      <div class="lt"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.8"><use href="#i-db"/></svg>跨境汇出</div>
+      <div class="ln">v1 · 最后入库 10-23 12:02</div>
+      <div class="lrow"><div><b>822</b><span>节点</span></div><div><b>3 528</b><span>切片</span></div><div><b>58%</b><span>可用</span></div></div>
+      <div class="bar w" style="margin-top:11px"><i style="width:58%"></i></div>
+    </div>
+  </div>
+
+  <div class="grid g-2" style="margin-top:12px">
+    <div class="card">
+      <div class="card-hd"><h3>入库明细</h3><span class="sub">按对象列出存储位置与可检索状态</span></div>
+      <div class="card-bd tight">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th style="width:26%">对象</th><th>存储</th><th>数量</th><th>检索</th><th>内容状态</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">PYMAIN.cbl</td><td>图 + 向量</td><td class="num">42 节点 / 186 切片</td><td><span class="tag g">可检索</span></td><td><span class="tag g">可取用</span></td></tr>
+              <tr><td class="mono">PYROUTE.cbl</td><td>图 + 向量</td><td class="num">28 节点 / 94 切片</td><td><span class="tag g">可检索</span></td><td><span class="tag g">可取用</span></td></tr>
+              <tr><td class="mono">DS_PY_NOSTRO</td><td>图 + 向量</td><td class="num">16 节点 / 61 切片</td><td><span class="tag g">可检索</span></td><td><span class="tag g">可取用</span></td></tr>
+              <tr><td class="mono">PYPOST.cbl</td><td>图 + 向量</td><td class="num">34 节点 / 152 切片</td><td><span class="tag r">可检索 · 标仅供参考</span></td><td><span class="tag y">有争议</span></td></tr>
+              <tr><td class="mono">跨境汇出接口规范_v3.pdf</td><td>向量</td><td class="num">214 切片</td><td><span class="tag g">可检索</span></td><td><span class="tag g">可取用</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted-fg);margin-top:10px;line-height:18px">
+          准入挂在来源级别上：L1a／L1b／L2 直接可用，L3 带「模型生成·未核实」，核验不成立的降 L4 标「仅供参考」但仍可检索——把内容藏起来会让人以为「没查到」等于「不存在」。标「有争议」的不进回答依据，已废止的下线。
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-hd"><h3>三类存储分工</h3><span class="anno">FR-STO-01</span></div>
+        <div class="card-bd">
+          <div class="stor">
+            <div class="s"><div class="k">图数据库</div><div class="v">关系与影响面</div><div style="font-size:11px;color:var(--muted-fg);margin-top:4px">程序 · 数据集 · 作业</div></div>
+            <div class="s"><div class="k">向量库</div><div class="v">语义检索</div><div style="font-size:11px;color:var(--muted-fg);margin-top:4px">切片 → 嵌入模型 → 向量</div></div>
+            <div class="s"><div class="k">对象存储</div><div class="v">原件与产物</div><div style="font-size:11px;color:var(--muted-fg);margin-top:4px">原始 + 转码稿</div></div>
+          </div>
+          <div class="divider"></div>
+          <div style="font-size:12px;color:var(--fg-65);line-height:19px">
+            切片的元数据固定包含：来源类型、来源级别、对象编号、定位信息、版本号。<span class="anno">FR-STO-02</span>
+          </div>
+          <div style="font-size:12px;color:var(--fg-65);line-height:19px;margin-top:6px">
+            切点由节标题与段落边界决定，不用语义切分模型；向量由嵌入模型生成，模型版本变更时全部切片重算。<span class="anno">FR-STO-11 / 12</span>
+          </div>
+          <div class="ph" style="margin-top:10px;border-color:hsl(212 60% 70% / .8);background:hsl(212 100% 45% / .07);color:hsl(212 100% 30%)">
+            <b>源码切片的使用限制</b><br>源码切片可被检索，但不作为问答的直接引用依据，只用于定位与比对。<span class="anno">FR-STO-03</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h3>版本与可重建性</h3><span class="anno">FR-STO-07 / 08</span></div>
+        <div class="card-bd">
+          <div style="font-size:12px;color:var(--fg-65);line-height:20px">
+            中间产物（切片、图边、向量）可由结构事实与知识文档重建，重建不改变人工修正过内容的版本号。<br>
+            知识文档与审核记录各自留版本，审核结论绑定到它当时所审的那一版。
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="grid g-2" style="margin-top:12px">
+    <div class="card">
+      <div class="card-hd"><h3>切片抽样</h3><span class="sub">按资料类型取参考口径（表 8-4），切法可调，性质不可调</span></div>
+      <div class="card-bd tight">
+        <div class="tbl-wrap">
+          <table class="tbl">
+            <thead><tr><th style="width:24%">切片编号</th><th style="width:22%">单元</th><th>定位区间</th><th style="width:11%">向量</th><th style="width:13%">状态</th></tr></thead>
+            <tbody>
+              <tr><td class="mono">PYMAIN/S-1000</td><td>COBOL 段落 1000-MAIN</td><td class="mono">PYMAIN.cbl:1204-1298</td><td><span class="tag g">有</span></td><td><span class="tag g">可检索</span></td></tr>
+              <tr><td class="mono">DSNOSTRO/R-01</td><td>copybook 01 级记录</td><td class="mono">DSNOSTRO.cpy:1-46</td><td><span class="tag g">有</span></td><td><span class="tag g">可检索</span></td></tr>
+              <tr><td class="mono">ATMJOB1/J-03</td><td>JCL 作业步骤 STEP030</td><td class="mono">ATMJOB1.jcl:18-24 · STEP030</td><td><span class="tag g">有</span></td><td><span class="tag g">可检索</span></td></tr>
+              <tr><td class="mono">限额参数/借记卡-06</td><td>工作表行块（每片带表头）</td><td class="mono">借记卡!A1:E61</td><td><span class="tag g">有</span></td><td><span class="tag g">可检索</span></td></tr>
+              <tr><td class="mono">ARCH-0112</td><td>不切片（无可读文本）</td><td class="mono">原件区 / 架构图_2024.vsdx</td><td><span class="tag o">—</span></td><td><span class="tag o">仅登记</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div style="font-size:11.5px;color:var(--muted-fg);margin-top:10px;line-height:18px">
+          同一文件同版本重复切片，切片数与切点位置一致；切法调整须整份重切，不混用两种切法。<span class="anno">FR-STO-13</span><br>
+          单片不超嵌入模型输入上限，超长在句末标点二次切分、保留父段落从属，不截断丢尾。<span class="anno">FR-STO-14</span><br>
+          定位细到行号区间或单元格区间；只给文件名的切片不进检索库。<span class="anno">FR-STO-17</span>
+        </div>
+        <div class="ph" style="margin-top:10px;border-color:hsl(150 50% 62% / .8);background:hsl(150 60% 45% / .07);color:hsl(150 60% 26%)">
+          <b>覆盖核对：切片定位区间并集 = 可切片范围，缺口 0 处</b><br>
+          同一位置被多片覆盖时，只有粒度最细的一个进入检索库，其余仅保留从属关系。<span class="anno">FR-STO-29</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-hd"><h3>索引与一致性核对</h3><span class="anno">FR-STO-18 ~ 22 / 28</span></div>
+      <div class="card-bd">
+        <div class="rowi"><span>嵌入模型</span><b class="mono" style="font-size:12px">text-embedding-3-large · v2</b></div>
+        <div class="rowi"><span>索引</span><b class="mono" style="font-size:12px">HNSW · cosine · 1536 维</b></div>
+        <div class="rowi"><span>候选集限定</span><b>知识版本 v2 + 应用系统 ATM</b></div>
+        <div class="rowi"><span>三数核对</span><b><span class="tag g">3 412 / 18 240 / 18 240 ✓</span></b></div>
+        <div class="rowi"><span>重建状态</span><b><span class="tag y">待重建 · 变更累积 12.4%</span></b></div>
+        <div class="rowi"><span>已下线切片</span><b><span class="tag o">42 条待物理删除</span></b></div>
+        <div class="divider"></div>
+        <div style="font-size:12px;color:var(--fg-65);line-height:19px">
+          向量以切片编号为唯一标识，一片一向量；切片下线时向量同步失效，索引重建时物理删除。<span class="anno">FR-STO-18 / 19</span><br>
+          重建期间检索保持可用，完成前不返回新旧索引混合的结果。<span class="anno">FR-STO-20</span><br>
+          同一索引内使用同一度量与同一归一化方式，变更时随模型版本全量重算。<span class="anno">FR-STO-22</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.graphwrap{display:grid;grid-template-columns:1fr 296px;gap:12px;align-items:start}
+.canvas{border:1px solid var(--border);border-radius:var(--r-card);background:
+  radial-gradient(circle at 50% 40%, hsl(212 70% 88% / .75), transparent 62%), var(--card);
+  position:relative;overflow:hidden}
+.canvas svg{display:block;width:100%;height:auto}
+.g-tools{display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:11px}
+.node-side .nrow{display:flex;justify-content:space-between;font-size:12.5px;padding:7px 0;
+  border-bottom:1px solid var(--border-soft)}
+.node-side .nrow:last-child{border-bottom:0}
+.node-side .nrow span{color:var(--muted-fg)}
+.node-side .nrow b{font-weight:500;color:var(--fg-85)}
+.evd{font-family:"SFMono-Regular",Consolas,monospace;font-size:11.5px;color:hsl(212 100% 34%);
+  background:hsl(212 100% 45% / .1);border:1px solid hsl(212 60% 82%);border-radius:5px;
+  padding:2px 6px;display:inline-block;margin-top:2px}
+</style>
+
+<!-- ==================== 屏 6 · 图谱总览（第 9 章） ==================== -->
+<section class="scr" id="s6" data-cr1="智能应用" data-cr2="图谱总览" data-tab="图谱总览" hidden>
+  <div class="page-hd">
+    <div>
+      <h1>图谱总览</h1>
+      <p>以对象为起点展开子图 · 固定 2 跳<span class="anno">FR-GRP-01 / 02</span></p>
+    </div>
+    <div class="hd-act">
+      <button class="btn">导出当前子图</button>
+    </div>
+  </div>
+
+  <div class="g-tools">
+    <div class="select" style="width:220px"><span class="mono" style="font-size:12.5px">PYMAIN.cbl</span>
+      <svg class="caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><use href="#i-chev-d"/></svg></div>
+    <span class="mini-sel on">2 跳</span>
+    <span style="width:1px;height:18px;background:var(--border);margin:0 3px"></span>
+    <span class="mini-sel on">调用</span><span class="mini-sel on">访问</span>
+    <span class="mini-sel">包含</span><span class="mini-sel">依赖</span>
+    <span style="margin-left:auto;display:flex;gap:6px;align-items:center">
+      <span class="mini-sel">业务线：跨境汇出</span>
+      <span class="mini-sel">布局：力导向</span>
+    </span>
+  </div>
+
+  <div class="ph" style="margin:0 0 12px;border-color:hsl(212 60% 70% / .8);background:hsl(212 100% 45% / .07);color:hsl(212 100% 30%)">
+    <b>2 跳是浏览视野，不是查询能力的上限</b><br>
+    1 跳只看得见直接关系、看不出影响面；3 跳以上关系过密而失去可读性。按需查询可指定跳数，走另一个入口，浏览视图不随之放开。<span class="anno">FR-GRP-02</span>
+  </div>
+
+  <div class="graphwrap">
+    <div class="canvas">
+      <svg viewBox="0 0 1000 520" font-family="inherit">
+        <!-- 边 -->
+        <g stroke="hsl(240 4% 55%)" stroke-width="1.4" fill="none">
+          <path d="M470 250 L340 168"/>
+          <path d="M470 268 L340 350"/>
+          <path d="M530 250 L665 176"/>
+          <path d="M520 280 L665 372"/>
+          <!-- 2 跳 -->
+          <path d="M330 160 L205 108" stroke-dasharray="4 4"/>
+          <path d="M322 176 L200 236" stroke-dasharray="4 4"/>
+          <path d="M676 168 L800 112" stroke-dasharray="4 4"/>
+          <path d="M680 186 L808 288"/>
+        </g>
+        <!-- 边标签 -->
+        <g fill="hsl(240 4% 52%)" font-size="10.5">
+          <text x="394" y="200">调用</text>
+          <text x="388" y="322">调用</text>
+          <text x="592" y="204">访问 · 读/更新</text>
+          <text x="588" y="336">作业步骤</text>
+        </g>
+
+        <!-- 中心节点 -->
+        <g>
+          <rect x="452" y="234" width="116" height="46" rx="9" fill="hsl(212 100% 45% / .2)"
+                stroke="hsl(212 100% 58%)" stroke-width="1.6"/>
+          <circle cx="470" cy="257" r="4.5" fill="hsl(212 100% 62%)"/>
+          <text x="484" y="253" fill="hsl(240 8% 10%)" font-size="11.5" font-weight="600">PYMAIN.cbl</text>
+          <text x="484" y="268" fill="hsl(212 100% 32%)" font-size="9.5">程序 · 起点</text>
+        </g>
+
+        <!-- 1 跳：程序 -->
+        <g>
+          <rect x="228" y="146" width="108" height="40" rx="8" fill="hsl(212 100% 45% / .12)" stroke="hsl(212 55% 72%)"/>
+          <text x="242" y="164" fill="hsl(240 8% 14%)" font-size="10.5">PYROUTE.cbl</text>
+          <text x="242" y="177" fill="hsl(240 4% 45%)" font-size="9">程序</text>
+        </g>
+        <g>
+          <rect x="228" y="332" width="108" height="40" rx="8" fill="hsl(212 100% 45% / .12)" stroke="hsl(212 55% 72%)"/>
+          <text x="242" y="350" fill="hsl(240 8% 14%)" font-size="10.5">PYVAL.cbl</text>
+          <text x="242" y="363" fill="hsl(240 4% 45%)" font-size="9">程序</text>
+        </g>
+
+        <!-- 1 跳：数据实体 -->
+        <g>
+          <rect x="668" y="156" width="118" height="40" rx="8" fill="hsl(258 90% 68% / .13)" stroke="hsl(258 55% 78%)"/>
+          <text x="680" y="174" fill="hsl(240 8% 14%)" font-size="10.5">DS_PY_NOSTRO</text>
+          <text x="680" y="187" fill="hsl(258 65% 40%)" font-size="9">数据实体</text>
+        </g>
+        <!-- 1 跳：作业 -->
+        <g>
+          <rect x="668" y="352" width="112" height="40" rx="8" fill="hsl(144 57% 58% / .13)" stroke="hsl(144 45% 68%)"/>
+          <text x="680" y="370" fill="hsl(240 8% 14%)" font-size="10.5">PYRECON.jcl</text>
+          <text x="680" y="383" fill="hsl(144 55% 24%)" font-size="9">作业</text>
+        </g>
+
+        <!-- 2 跳 -->
+        <g opacity=".8">
+          <rect x="128" y="88" width="86" height="36" rx="7" fill="hsl(42 84% 61% / .1)" stroke="hsl(38 75% 62%)"/>
+          <text x="138" y="105" fill="hsl(240 8% 18%)" font-size="10">CPSGRP.CSD</text>
+          <text x="138" y="117" fill="hsl(38 78% 30%)" font-size="8.5">copybook</text>
+
+          <rect x="112" y="220" width="96" height="36" rx="7" fill="hsl(258 90% 68% / .1)" stroke="hsl(258 45% 82%)"/>
+          <text x="122" y="237" fill="hsl(240 8% 18%)" font-size="9.5">MQ.CROSSBORDER</text>
+          <text x="122" y="249" fill="hsl(258 65% 41%)" font-size="8.5">队列</text>
+
+          <rect x="802" y="94" width="96" height="36" rx="7" fill="hsl(212 100% 45% / .08)" stroke="hsl(212 50% 78%)"/>
+          <text x="812" y="111" fill="hsl(240 8% 18%)" font-size="10">PYPOST.cbl</text>
+          <text x="812" y="123" fill="hsl(240 4% 52%)" font-size="8.5">程序</text>
+
+          <rect x="808" y="270" width="112" height="36" rx="7" fill="hsl(258 90% 68% / .1)" stroke="hsl(258 45% 82%)"/>
+          <text x="818" y="287" fill="hsl(240 8% 18%)" font-size="9.5">DS_PY_PARMFILE</text>
+          <text x="818" y="299" fill="hsl(258 65% 41%)" font-size="8.5">数据实体</text>
+        </g>
+
+        <!-- 图例 -->
+        <g transform="translate(20,470)">
+          <text x="0" y="0" fill="hsl(240 4% 45%)" font-size="10">图例</text>
+          <line x1="42" y1="-4" x2="74" y2="-4" stroke="hsl(240 4% 52%)" stroke-width="1.4"/>
+          <text x="80" y="0" fill="hsl(240 4% 45%)" font-size="10">解析直出</text>
+          <line x1="146" y1="-4" x2="178" y2="-4" stroke="hsl(240 4% 52%)" stroke-width="1.4" stroke-dasharray="4 4"/>
+          <text x="184" y="0" fill="hsl(240 4% 45%)" font-size="10">人工确认</text>
+          <rect x="256" y="-11" width="10" height="10" rx="3" fill="hsl(212 100% 45% / .3)" stroke="hsl(212 55% 70%)"/>
+          <text x="272" y="0" fill="hsl(240 4% 45%)" font-size="10">程序</text>
+          <rect x="316" y="-11" width="10" height="10" rx="3" fill="hsl(258 90% 68% / .3)" stroke="hsl(258 55% 78%)"/>
+          <text x="332" y="0" fill="hsl(240 4% 45%)" font-size="10">实体</text>
+          <rect x="376" y="-11" width="10" height="10" rx="3" fill="hsl(144 57% 58% / .3)" stroke="hsl(144 45% 68%)"/>
+          <text x="392" y="0" fill="hsl(240 4% 45%)" font-size="10">作业</text>
+          <rect x="436" y="-11" width="10" height="10" rx="3" fill="hsl(38 80% 45% / .3)" stroke="hsl(38 75% 62%)"/>
+          <text x="452" y="0" fill="hsl(240 4% 45%)" font-size="10">copybook</text>
+        </g>
+      </svg>
+    </div>
+
+    <div class="card node-side">
+      <div class="card-hd"><h3>节点</h3><div class="hd-right"><span class="tag b">程序</span></div></div>
+      <div class="card-bd">
+        <div class="mono" style="font-size:13px;color:var(--fg);margin-bottom:3px">PYMAIN.cbl</div>
+        <div style="font-size:11.5px;color:var(--muted-fg);margin-bottom:11px">支付报文主处理程序</div>
+        <div class="nrow"><span>归属应用系统</span><b>跨境汇出</b></div>
+        <div class="nrow"><span>上游调用方</span><b>4</b></div>
+        <div class="nrow"><span>下游被调用</span><b>12</b></div>
+        <div class="nrow"><span>访问数据集</span><b>3</b></div>
+        <div class="nrow"><span>内容状态</span><b style="color:var(--success)">可取用</b></div>
+        <div style="margin-top:12px;font-size:11.5px;color:var(--muted-fg)">证据位置<span class="anno">FR-STO-06</span></div>
+        <div class="evd">PYMAIN.cbl:1236-1241</div>
+        <div class="divider" style="margin:12px 0"></div>
+        <button class="btn btn-sm btn-block">打开知识文档</button>
+        <button class="btn btn-sm btn-block" style="margin-top:6px">查看影响面</button>
+        <div style="font-size:11px;color:var(--muted-fg);line-height:17px;margin-top:11px">
+          侧栏只呈现该节点的直接事实与证据位置，不做链路推理。
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+.qa-wrap{display:grid;grid-template-columns:1fr 300px;gap:12px;height:calc(100vh - 116px);min-height:560px}
+.qa-main{display:flex;flex-direction:column;border:1px solid var(--border);border-radius:var(--r-card);
+  overflow:hidden;background:var(--card)}
+.qa-hd{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--border-soft);flex:0 0 auto}
+.qa-hd .lg{width:26px;height:26px;border-radius:7px;background:linear-gradient(135deg,hsl(212 100% 52%),hsl(258 90% 64%));
+  display:grid;place-items:center;font-size:10px;font-weight:600;color:#fff}
+.qa-hd .t1{font-size:13px;font-weight:500}
+.qa-hd .t2{font-size:11px;color:var(--muted-fg)}
+.qa-body{flex:1;min-height:0;overflow-y:auto;padding:16px 14px}
+.msg{display:flex;gap:9px;margin-bottom:16px}
+.msg .av{width:24px;height:24px;border-radius:6px;flex:0 0 24px;display:grid;place-items:center;font-size:10px;
+  font-weight:600;background:var(--accent);color:var(--fg-65)}
+.msg .bub{flex:1;min-width:0}
+.msg.me .av{background:hsl(212 100% 45% / .2);color:hsl(212 100% 33%)}
+.msg .q{font-size:13px;color:var(--fg);line-height:21px}
+.ans{border:1px solid var(--border-soft);border-radius:8px;padding:12px 13px;background:hsl(240 8% 96% / .9)}
+.ans .lb{font-size:10.5px;letter-spacing:.5px;color:var(--muted-fg);margin-bottom:5px}
+.ans .blk+.blk{margin-top:11px;padding-top:11px;border-top:1px dashed var(--border-soft)}
+.ans .c1{font-size:13px;line-height:21px;color:var(--fg)}
+.cite{display:inline-flex;align-items:center;gap:5px;font-size:11.5px;color:hsl(212 100% 33%);
+  background:hsl(212 100% 45% / .1);border:1px solid hsl(212 60% 82%);border-radius:5px;padding:1px 7px;
+  cursor:pointer;margin:2px 4px 2px 0;font-family:"SFMono-Regular",Consolas,monospace}
+.cite:hover{background:hsl(212 100% 45% / .2)}
+.conf{display:flex;align-items:center;gap:8px;margin-top:2px}
+.conf .num{font-size:15px;font-weight:600;color:var(--success);font-variant-numeric:tabular-nums}
+.qa-foot{flex:0 0 auto;border-top:1px solid var(--border-soft);padding:11px 14px}
+.suggs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
+.sugg{height:24px;padding:0 9px;border-radius:6px;border:1px solid var(--border);font-size:11.5px;
+  color:var(--fg-65);display:inline-flex;align-items:center;cursor:pointer;background:transparent;font-family:inherit}
+.sugg:hover{border-color:var(--primary);color:var(--primary)}
+.inp-row{display:flex;gap:8px}
+.inp-row .input{flex:1;height:38px}
+.qa-side{display:flex;flex-direction:column;gap:12px;overflow-y:auto}
+.mini{font-size:11.5px;color:var(--muted-fg);line-height:18px}
+.hit{display:flex;gap:8px;align-items:flex-start;font-size:11.5px;line-height:17px;margin-bottom:8px;color:var(--fg-65)}
+.hit i{width:6px;height:6px;border-radius:50%;flex:0 0 6px;margin-top:6px}
+.stat3{display:flex;gap:10px;text-align:center;margin-top:10px}
+.stat3>div{flex:1}
+.stat3 b{display:block;font-size:18px;font-variant-numeric:tabular-nums;color:var(--fg-85)}
+.stat3 span{font-size:11px;color:var(--muted-fg)}
+</style>
+
+<!-- ==================== 屏 7 · 问答控制台（第 10 章） ==================== -->
+<section class="scr" id="s7" data-cr1="智能应用" data-cr2="问答控制台" data-tab="问答控制台" hidden>
+  <div class="qa-wrap">
+    <!-- 对话主体 -->
+    <div class="qa-main">
+      <div class="qa-hd">
+        <span class="lg">RB</span>
+        <div>
+          <div class="t1">核心系统迁移知识库 · 问答控制台</div>
+          <div class="t2">场景 ATM｜流程：问题分析 → 三元拆分 → 多路检索 → 整体分析 → 带依据作答</div>
+        </div>
+        <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+          <span class="tag b">Agent 自动调度工具</span>
+          <span class="tag o">会话 2a8f0f59</span>
+          <span class="tag o">当前角色：dev</span>
+        </div>
+      </div>
+
+      <div class="qa-body">
+        <!-- 提问 -->
+        <div class="msg me">
+          <div class="av">dev</div>
+          <div class="bub"><div class="q">PYMAIN 程序对超过 5 万美元的跨境汇出做了什么处理？会影响哪些下游程序？</div></div>
+        </div>
+
+        <!-- 回答（必出四项 + 可选三项） -->
+        <div class="msg">
+          <div class="av">RB</div>
+          <div class="bub">
+            <div class="ans">
+              <div class="blk">
+                <div class="lb">结论</div>
+                <div class="c1">金额超过 50 000 USD 时，PYMAIN 将路由标志置为 <span class="mono">R</span> 并转人工复核；未超过则按账户行走路由，调用 <span class="mono">8000-ROUTE-NOSTRO</span>。</div>
+                <span class="anno">FR-QA-01</span>
+              </div>
+              <div class="blk">
+                <div class="lb">依据</div>
+                <div style="font-size:12.5px;line-height:20px;color:var(--fg-65)">
+                  业务规则：金额 &gt; 50 000 USD → 置 R 并调用人工复核段落；规则取自程序段落 1000-MAIN 的判断分支。
+                </div>
+                <span class="anno">FR-QA-01</span>
+              </div>
+              <div class="blk">
+                <div class="lb">出处<span class="anno">FR-QA-07</span></div>
+                <div>
+                  <span class="cite"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-code"/></svg>PYMAIN.cbl:1236-1241</span>
+                  <span class="cite"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-doc"/></svg>知识文档 §6 业务规则</span>
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">置信度<span class="anno">FR-QA-09</span></div>
+                <div class="conf">
+                  <span class="num">0.93</span>
+                  <div class="bar g" style="flex:1;max-width:140px"><i style="width:93%"></i></div>
+                  <span class="tag g">L2 已修正</span>
+                  <span style="font-size:11px;color:var(--muted-fg)">继承所引内容的来源级别</span>
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">影响面<span class="anno">FR-QA-02</span></div>
+                <div style="font-size:12.5px;line-height:20px;color:var(--fg-65)">
+                  下游 12 个程序调用该段落，其中 <span class="mono">PYPOST.cbl</span>、<span class="mono">PYROUTE.cbl</span> 直接受影响；相关数据集 DS_PY_NOSTRO 被 7 个程序访问。
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">图谱路径<span class="anno">FR-QA-20 / 21</span></div>
+                <div class="gp">
+                  <svg viewBox="0 0 430 150" style="display:block;width:100%;max-width:430px;height:auto">
+                    <defs><marker id="garr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5"
+                      orient="auto-start-reverse"><path d="M2 1L8 5L2 9" fill="none" stroke="#7b8794"
+                      stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+                    <rect x="10" y="58" width="104" height="34" rx="7" fill="hsl(212 100% 45% / .12)" stroke="hsl(212 60% 72%)"/>
+                    <text x="62" y="79" text-anchor="middle" font-size="12" fill="#1d2733">1000-MAIN</text>
+                    <rect x="206" y="14" width="106" height="34" rx="7" fill="#fff" stroke="hsl(212 25% 74%)"/>
+                    <text x="259" y="35" text-anchor="middle" font-size="12" fill="#1d2733">PYPOST.cbl</text>
+                    <rect x="206" y="102" width="106" height="34" rx="7" fill="#fff" stroke="hsl(212 25% 74%)"/>
+                    <text x="259" y="123" text-anchor="middle" font-size="12" fill="#1d2733">PYROUTE.cbl</text>
+                    <path d="M114 72 C152 60 176 44 202 36" fill="none" stroke="#7b8794" stroke-width="1.2" marker-end="url(#garr)"/>
+                    <path d="M114 78 C152 90 176 106 202 114" fill="none" stroke="#7b8794" stroke-width="1.2" marker-end="url(#garr)"/>
+                    <text x="126" y="46" font-size="11" fill="#5f6b7a">调用</text>
+                    <text x="126" y="108" font-size="11" fill="#5f6b7a">调用</text>
+                    <text x="330" y="24" font-size="11" fill="#8a94a3">PYMAIN.cbl:1204</text>
+                    <text x="330" y="112" font-size="11" fill="#8a94a3">PYMAIN.cbl:1236</text>
+                  </svg>
+                  <div class="gp-note">
+                    只画本次结论引用的 3 个节点与 2 条边，不展开未参与的邻域——图上出现的才是依据，没出现不代表不存在。
+                  </div>
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">处理建议<span class="anno">FR-QA-03</span></div>
+                <div style="font-size:12.5px;line-height:20px;color:var(--fg-65)">
+                  迁移时优先核对阈值来源（配置项 <span class="mono">WS-LIMIT</span> 由 PARMFILE 读取），并同步调整下游两个程序的人工复核分支。
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 路径复用示例 -->
+        <div class="msg me">
+          <div class="av">dev</div>
+          <div class="bub"><div class="q">B 行 IC 卡单日上限是多少？</div></div>
+        </div>
+        <div class="msg">
+          <div class="av">RB</div>
+          <div class="bub">
+            <div class="ans">
+              <div class="blk">
+                <div class="lb">结论<span class="anno">FR-QA-01</span></div>
+                <div class="c1" style="font-size:12.5px">B 行 IC 卡单日消费上限为人民币 20 000 元；取现单日上限另设，为 10 000 元。</div>
+              </div>
+              <div class="blk">
+                <div class="lb">图谱路径 · 不展示<span class="anno">FR-QA-20</span></div>
+                <div style="font-size:12px;color:var(--muted-fg);line-height:19px">
+                  单点取值的事实类问题不附图：答案落在参数表某一行的一两个单元格上，画成图只有一个节点，没有信息量，反而占版面（见表 10-4）。
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">依据<span class="anno">FR-GEN-25</span></div>
+                <div style="font-size:12.5px;line-height:20px;color:var(--fg-65)">
+                  参数表「借记卡」工作表第 18 行：卡种 = IC 卡、机构 = B 行、单日消费上限 = 20000、单日取现上限 = 10000；含义取自单元格原文，未作推断。
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">出处<span class="anno">FR-QA-07</span></div>
+                <div>
+                  <span class="cite"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><use href="#i-doc"/></svg>渠道限额参数.xlsx / 借记卡 / B18:E18</span>
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">检索路径<span class="anno">FR-QA-17 / 18</span></div>
+                <div style="font-size:12.5px;line-height:20px;color:var(--fg-65)">
+                  <span class="tag b sm">沿用 PATH-0031</span>
+                  <span style="margin-left:6px">问题模板「〈机构〉的〈卡种〉单日上限是多少」· 槽位 机构 = B 行、卡种 = IC 卡</span>
+                  <div style="margin-top:6px;color:var(--muted-fg);font-size:12px">
+                    该模板于首次提问「A 行 IC 卡单日上限是多少」时留存（当次 3 次改写、总耗时 8.4 s）；
+                    本次直接定位到参数表对应行，耗时 1.1 s，未重新全库检索。取值已按 B 行自身单元格核对，A 行的结论未代入。
+                  </div>
+                </div>
+              </div>
+              <div class="blk">
+                <div class="lb">置信度<span class="anno">FR-QA-09</span></div>
+                <div class="conf">
+                  <span class="num">0.96</span>
+                  <div class="bar g" style="flex:1;max-width:140px"><i style="width:96%"></i></div>
+                  <span class="tag g">L1b 文档原文</span>
+                  <span style="font-size:11px;color:var(--muted-fg)">复用只改变检索次序，不改变来源级别</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 拒答示例 -->
+        <div class="msg me">
+          <div class="av">dev</div>
+          <div class="bub"><div class="q">PYPOST 程序的记账科目在迁移后是否仍保持一致？</div></div>
+        </div>
+        <div class="msg">
+          <div class="av">RB</div>
+          <div class="bub">
+            <div class="ans" style="border-color:hsl(38 80% 45% / .35);background:hsl(42 84% 61% / .05)">
+              <div class="blk">
+                <div class="lb" style="color:var(--warning)">无依据 · 不予作答<span class="anno">FR-QA-04</span></div>
+                <div class="c1" style="font-size:12.5px">知识库中没有可用于回答该问题的依据：PYPOST.cbl 的知识文档当前状态为「有争议」，不进入回答依据。</div>
+                <div class="mini" style="margin-top:8px">可执行的下一步：① 重新生成 PYPOST.cbl 知识文档并完成审核；② 补充记账科目对照表。</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="qa-foot">
+        <div class="suggs">
+          <span class="sugg">ATM 取款返回错误码 14 余额不足，应如何排查？</span>
+          <span class="sugg">错误码 14 是什么意思？</span>
+          <span class="sugg">SmartCan 在系统里属于什么卡种接口？</span>
+          <span class="sugg">修改 ATM/MD402 程序会影响哪些接口和子系统？</span>
+          <span class="sugg">B 行 IC 卡单日上限是多少？</span>
+        </div>
+        <div class="inp-row">
+          <div class="input" style="color:var(--muted-fg)">输入问题，回车发送（支持追问）</div>
+          <button class="btn btn-primary" style="height:38px;padding:0 22px">提问</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 右栏 -->
+    <div class="qa-side">
+      <div class="card">
+        <div class="card-hd"><h3>命中策略</h3></div>
+        <div class="card-bd">
+          <div class="hit"><i style="background:var(--success)"></i><div><b style="color:var(--success)">精确命中</b>（sim ≥ 0.95）：直接取出</div></div>
+          <div class="hit"><i style="background:var(--warning)"></i><div><b style="color:var(--warning)">相似命中</b>（0.80 – 0.95）：参考复用</div></div>
+          <div class="hit"><i style="background:var(--danger)"></i><div><b style="color:var(--danger)">未命中</b>（&lt; 0.80）：实时推理</div></div>
+          <div class="mini" style="margin-top:6px">复现通过的答案写入已验证答案库，同类问题下次直接命中。</div>
+          <span class="anno">FR-QA-05 / 06</span>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h3>本次会话</h3></div>
+        <div class="card-bd">
+          <div class="stat3">
+            <div><b>6</b><span>消息</span></div>
+            <div><b style="color:var(--success)">2</b><span>精确命中</span></div>
+            <div><b style="color:var(--warning)">1</b><span>拒答</span></div>
+          </div>
+          <div class="divider"></div>
+          <div class="mini">
+            3 轮问答：1 轮全库检索命中，1 轮沿用留存路径（PATH-0031），1 轮无依据拒答。<span class="anno">FR-QA-16 / 17</span>
+          </div>
+          <div class="divider"></div>
+          <div class="mini">
+            引用一律带来源级别与出处位置，可点击回跳到原件；L3 内容作口径结论时，「模型生成·未核实」须与结论同屏。<span class="anno">FR-QA-08</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-hd"><h3>检索范围</h3></div>
+        <div class="card-bd">
+          <div class="chips" style="margin-top:0">
+            <span class="chip on">跨境汇出</span><span class="chip on">支付结算系统</span><span class="chip">核心存款系统</span>
+          </div>
+          <div class="mini" style="margin-top:9px">范围外对象不参与检索；跨系统关联通过共享数据集给出提示。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== 屏 8 · 系统状态（非功能需求） ==================== -->
+<section class="scr" id="s8" data-cr1="系统状态" data-cr2="运行概览" data-tab="系统状态" hidden>
+  <div class="page-hd">
+    <div><h1>系统状态</h1><p>委托方环境 · 断网可用<span class="anno">NFR-03 / 04</span></p></div>
+    <div class="hd-act"><button class="btn">自检</button></div>
+  </div>
+
+  <div class="grid g-4" style="margin-bottom:12px">
+    <div class="kpi"><div class="v s">正常</div><div class="k">图谱库</div></div>
+    <div class="kpi"><div class="v s">正常</div><div class="k">向量库</div></div>
+    <div class="kpi"><div class="v w">排队 3</div><div class="k">生成任务</div></div>
+    <div class="kpi"><div class="v s">已断开</div><div class="k">外网连接（预期）</div></div>
+  </div>
+
+  <div class="grid g-2">
+    <div class="card">
+      <div class="card-hd"><h3>性能基线</h3><span class="sub">委托方环境实测</span></div>
+      <div class="card-bd">
+        <div class="metric"><div class="mh"><b>问答首字响应</b><em>1.8 s</em><span>要求 ≤ 3 s</span></div><div class="bar g"><i style="width:60%"></i></div></div>
+        <div class="metric"><div class="mh"><b>单程序知识文档生成</b><em>42 s</em><span>要求 ≤ 60 s</span></div><div class="bar g"><i style="width:70%"></i></div></div>
+        <div class="metric" style="margin-bottom:0"><div class="mh"><b>解析吞吐</b><em>26 文件/分</em><span>参考值，不作验收阈值</span></div><div class="bar g"><i style="width:78%"></i></div></div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-hd"><h3>数据保留与容量</h3><span class="anno">FR-DAT-02 / 03</span></div>
+      <div class="card-bd">
+        <div class="nrow" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
+          <span style="color:var(--muted-fg)">原件与转码稿</span><b>保留 3 年</b></div>
+        <div class="nrow" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
+          <span style="color:var(--muted-fg)">结构事实</span><b>随原件保留，可重建</b></div>
+        <div class="nrow" style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px">
+          <span style="color:var(--muted-fg)">知识文档版本</span><b>保留全部历史版本</b></div>
+        <div class="nrow" style="display:flex;justify-content:space-between;padding:8px 0;font-size:12.5px">
+          <span style="color:var(--muted-fg)">当前占用</span><b>18.4 GB / 200 GB</b></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+      </div><!-- /view-inner -->
+    </div><!-- /view -->
+  </div><!-- /stage -->
+</div><!-- /app -->
+
+<!-- 抽屉遮罩 -->
+<div class="mask" id="mask" onclick="closeAllDrawers()"></div>
+
+<!-- 需求注释面板 -->
+<div class="spec" id="spec"></div>
+
+<script>
+/* ================= 每屏的需求对应与缺口 ================= */
+const SPEC = {
+  s1: {
+    title: '屏① 上传文档',
+    cr1: '内容管理', cr2: '上传文档', tab: '上传文档',
+    req: [
+      ['FR-IMP-21', '导入由人提交批次，不自动扫描目录'],
+            ['FR-IMP-01', '格式接入范围：23 项格式，其中 10 项支持'],
+      ['FR-IMP-02', '未接入格式仍接收并计入清单，不进解析'],
+      ['FR-IMP-03', '编码转换与原件留存'],
+      ['FR-IMP-04', '归属唯一性：一个文件只归一个系统'],
+      ['FR-IMP-05', '辅助标签与「待确定」状态'],
+      ['FR-IMP-06', '导入阶段不得进行内容判断'],
+      ['FR-IMP-07', '清单列结构'],
+      ['FR-IMP-08', '解析状态实时刷新'],
+      ['FR-IMP-20', '同一文档新旧格式同等接入，多格式副本择一解析']
+    ],
+    gap: [
+      ['密级取值未定义', '「安全等级」只有下拉，取值集合与它对权限的实际作用（能不能看、能不能检索）文档里没有定义，而「敏感级别与权限」又被推到后续阶段。'],
+      ['新建系统的约束', '原型放了「＋ 新建应用系统」，但没写新建时必填什么、能不能重名、建立后谁能改。'],
+      ['待确定的回填时机', '标签置「待确定」后，在哪一步必须补齐——审核通过前还是入库前，未定义。']
+    ]
+  },
+  s2: {
+    title: '屏② 内容解析',
+    cr1: '构建与治理', cr2: '内容解析', tab: '内容解析',
+    req: [
+      ['FR-PRS-01', '批次提交后自动触发，文件为执行单元'],
+      ['FR-PRS-02', '单文件失败不阻断同批其余文件'],
+      ['FR-PRS-03', '三种重跑入口：批次 / 系统 / 单文件'],
+      ['FR-PRS-06', '六类结构事实按文件类型分工'],
+      ['FR-PRS-16', '表格按工作表与行列抽取，单元格区间可回跳'],
+      ['FR-PRS-17', '跨表键关系不自动推断，只进疑点清单'],
+      ['FR-PRS-08', '资料不足时标注，不判解析失败'],
+      ['FR-PRS-11', '解析产物清单可逐项核对'],
+      ['FR-PRS-13', '三项覆盖率指标（含分母口径）'],
+      ['FR-PRS-14', '归属相关性提示，只提示不自动改']
+    ],
+    gap: [
+      ['重跑的下游失效', '单文件重跑后，已经生成的知识文档与图谱边是否自动失效重算？不失效会留下与源码不符的旧结论。'],
+      ['失败重试上限', '自动解析失败的重试次数与退避策略没定，坏文件可能长期占队列。'],
+      ['资料不足的计数', '缺 JCL 产生的「资料不足」是否计入批次成功率，与第 4 章「未接入」口径需统一。'],
+      ['表格的多表头', '两层表头在抽取时如何合并、合并单元格的覆盖范围怎么写进事实，现在只定了按左上角取值，跨表头行的语义合并没定。'],
+      ['多格式副本的一致性', '同一文档的 .docx 与 .doc 若内容有细微差异（如页眉版本号不同），以哪一份为准、差异是否入疑点清单，未定义。']
+    ]
+  },
+  s3: {
+    title: '屏③ 知识生成',
+    cr1: '构建与治理', cr2: '知识生成', tab: '知识生成',
+    req: [
+      ['FR-GEN-01', '按范围手动触发，异步执行'],
+      ['FR-GEN-02', '范围：应用系统 / 程序清单 / 单程序'],
+      ['FR-GEN-03', '范围外对象只写占位引用'],
+      ['FR-GEN-04', '单对象失败不影响同批'],
+      ['FR-GEN-32', '资料变化后只重算引用它的单元与汇总产物'],
+      ['FR-GEN-08', '程序知识文档的 10 节结构'],
+      ['FR-GEN-12', '数据实体说明的跨程序聚合'],
+      ['FR-GEN-17', '结论带出处与来源级别'],
+      ['FR-GEN-18', '结构事实不得被改写'],
+      ['FR-GEN-25', '码表与参数表逐行成文，含义取自原文标 L1b']
+    ],
+    gap: [
+      ['访问矩阵不完整', '实体说明的访问矩阵要等访问它的程序都生成后才齐。只生成部分程序时，标「不完整」还是只列已生成的，需定口径。'],
+      ['占位引用的回填', '占位对象纳入范围后由谁触发回填、回填失败怎么提示，未定义。'],
+      ['10 节的适用边界', '作业说明与实体说明不套 10 节模板，但两者的固定节结构文档里没有给出。']
+    ]
+  },
+  s4: {
+    title: '屏④ 质量核验',
+    cr1: '构建与治理', cr2: '质量核验', tab: '质量核验',
+    req: [
+      ['FR-GEN-26', '产物分索引与解释两条通道，同一文档内并存'],
+      ['FR-GEN-27', '索引通道产物生成即可取用，不进核验队列'],
+      ['FR-GEN-28', '解释通道产物逐条标「模型生成·未核实」'],
+      ['FR-REV-18', '生成产物写入后自动核验，全量不抽样'],
+      ['FR-REV-19', '升 L2 只能由人「修正并确认」，不自动升级'],
+      ['FR-REV-01', '列表 + 详情两级布局'],
+      ['FR-REV-02', '详情内三栏对照：原件 / 结构事实 / 结论'],
+      ['FR-REV-03', '四类处置动作：标记有误 / 修正并确认 / 辩驳 / 废止'],
+      ['FR-REV-04', '标记有误必须填写原因'],
+      ['FR-REV-07', '抽检按影响面分三层，比例全查 / 20% / 5%'],
+      ['FR-REV-09', '核验不成立降 L4 标「仅供参考」，仍可检索'],
+      ['FR-REV-11', '四态分区：可取用 / 已修正 / 有争议 / 已废止'],
+      ['FR-REV-12', '未核实内容可作参考，标注须与结论同屏'],
+      ['FR-REV-13', '处置操作留痕'],
+      ['FR-REV-21', '上线前用固定评估集测四类问题'],
+      ['FR-REV-22', '各层不符比例不超上限方可放行'],
+      ['FR-REV-05', '指派与责任人变更'],
+      ['FR-REV-06', '抽检按内容类型分派给业务专家 / 开发架构'],
+      ['FR-REV-08', '核验项限定为表 7-1 的前六项，不做业务口径判断'],
+      ['FR-REV-10', '每条结论标来源级别，L3／L4 有可辨别标注'],
+      ['FR-REV-14', '标记原因统计，区分模型问题与资料问题'],
+      ['FR-REV-15', '疑点处置去向不可为空'],
+      ['FR-REV-16', '术语按批次整批确认，不要求逐条提交'],
+      ['FR-REV-17', '经验条目确认须核对引用是否支持结论'],
+      ['FR-REV-20', '索引通道产物逐字段比对结构事实，不一致转解释通道'],
+      ['FR-REV-23', '标记有误进入待处置清单并通知对应角色'],
+      ['FR-REV-24', '重生成不得覆盖已修正内容'],
+      ['FR-REV-25', '修正版与新生成内容的差异并列保留']
+    ],
+    gap: [
+      ['抽检与报错的双轨', '上线前抽检发现的是整体偏差，运行期标记发现的是单条错误。两者是否共用一份待处置清单，抽检不过时是退回重生成还是逐条修正，正文没有区分。'],
+      ['标记的门槛', '任何人都能标记有误，但「同一内容被两名使用者标记即优先展示」无法处理量大时的堆积。是否需要按影响面再加一层排序，未定义。'],
+      ['疑点的结案', '疑点标记后由谁结案、结案结论写到哪里，与 FR-REV-15 的处置去向还没对上。'],
+      ['评估集与资料变化的冲突', '评估集要求入库前固定，但源文件会随迁移推进而更新，题目与预期答案何时失效、由谁维护，正文只写了「不随资料变化而改」。']
+    ]
+  },
+  s5: {
+    title: '屏⑤ 知识库列表',
+    cr1: '内容管理', cr2: '知识库列表', tab: '知识库列表',
+    req: [
+      ['FR-STO-10', '审核确认后自动入库，单份失败可重跑'],
+            ['FR-STO-01', '三类存储分工：图 / 向量 / 对象'],
+      ['FR-STO-02', '切片元数据的固定项'],
+      ['FR-STO-03', '源码切片的检索与使用限制'],
+      ['FR-STO-04', '未审核内容不进可检索集合'],
+      ['FR-STO-05', '按来源级别过滤检索结果'],
+      ['FR-STO-06', '图谱节点的证据位置'],
+      ['FR-STO-07', '每个节点与每条边都能回跳到证据位置'],
+      ['FR-STO-08', '知识文档与审核记录各自留版本'],
+      ['FR-STO-11', '切点由结构位置决定，不用语义切分'],
+      ['FR-STO-12', '嵌入模型版本变更时全部切片重算'],
+      ['FR-STO-13', '切片结果可复现，切法调整须整份重切不混用'],
+      ['FR-STO-14', '单片不超嵌入模型上限，超长二次切分不丢尾'],
+      ['FR-STO-15', '表格按工作表切片，每片带表头'],
+      ['FR-STO-16', '无可读文本的资料只登记不切片'],
+      ['FR-STO-17', '定位细到行号或单元格区间，只给文件名不得入库'],
+      ['FR-STO-18', '向量与切片一一对应，无孤儿向量'],
+      ['FR-STO-19', '切片下线时向量同步失效并物理删除'],
+      ['FR-STO-20', '索引构建与重建，重建期不返回新旧混合结果'],
+      ['FR-STO-21', '候选集先按知识版本与应用系统限定'],
+      ['FR-STO-22', '同一索引内度量与归一化口径一致'],
+      ['FR-STO-23', '节点与关系类型取自封闭清单'],
+      ['FR-STO-24', '按唯一键覆盖，重复入库不产生重复节点'],
+      ['FR-STO-25', '范围外引用落占位节点'],
+      ['FR-STO-26', '边不得由模型推断（负向需求）'],
+      ['FR-STO-27', '条目下线时节点与关系一并下线'],
+      ['FR-STO-09', '版本变更后旧切片下线，不再进入检索'],
+      ['FR-STO-28', '节点数 / 切片数 / 向量数可核对'],
+      ['FR-STO-29', '切片定位区间并集等于可切片范围，同位置只留最细粒度']
+    ],
+    gap: [
+      ['齐备度的分母', '知识库卡片上的「可取用比例」要不要把「未接入格式」算进分母？两种算法差距很大。'],
+      ['重建的触发', '「重建索引」是人工点还是入库后自动？重建期间检索是否降级，未定义。'],
+      ['撤回的边界', '驳回内容整批撤回，但已经被人引用过的问答记录是否一并作废，未说明。'],
+      ['覆盖核对的时点', 'FR-STO-29 只要求覆盖率成立，没写在哪一步核对。入库前核对可以拦下缺内容的文件，但那时切片还没生成；入库后核对能算，却已经产生了一批命中不到的切片。两种做法对「不合格文件是先拦下还是先标记」的处理不同。'],
+      ['重建的分界', '重建期间「不返回新旧混合结果」是对同一次查询说的，还是对整段重建期说的？如果是后者，重建期内所有查询都得等，那 FR-STO-20 的「保持可用」就落不实。']
+    ]
+  },
+  s6: {
+    title: '屏⑥ 图谱总览',
+    cr1: '智能应用', cr2: '图谱总览', tab: '图谱总览',
+    req: [
+      ['FR-GRP-07', '浏览只读，不触发解析、生成或入库任务'],
+            ['FR-GRP-01', '以对象为起点展开子图'],
+      ['FR-GRP-02', '浏览视图固定 2 跳；2 跳是视野不是上限，按需查询可指定跳数'],
+      ['FR-GRP-03', '默认关系类型可配'],
+      ['FR-GRP-04', '业务线分图'],
+      ['FR-GRP-05', '节点与边区分解析直出 / 人工确认'],
+      ['FR-GRP-06', '节点侧栏只给直接事实与证据位置']
+    ],
+    gap: [
+      ['按需查询的入口', 'v3.7 起已把「2 跳是视野不是上限」写进 9.1 与 FR-GRP-02，但按需查询的入口长什么样、跳数上限设不设、结果与浏览视图是否共用同一套配色与关系过滤，原型里还没有这一屏。'],
+      ['分图的交叉', '业务线分图后，跨业务线的共享数据集出现在哪张图里，未定义。']
+    ]
+  },
+  s7: {
+    title: '屏⑦ 问答控制台',
+    cr1: '智能应用', cr2: '问答控制台', tab: '问答控制台',
+    req: [
+      ['FR-QA-19', '提问即触发，单次提问为一个执行单元'],
+            ['FR-QA-01', '必出四项：结论 / 依据 / 出处 / 置信度'],
+      ['FR-QA-02', '可选三项按问题类型出现'],
+      ['FR-QA-03', '处理建议由检索结果组织'],
+      ['FR-QA-04', '无依据时拒答'],
+      ['FR-QA-07', '引用必须可定位'],
+      ['FR-QA-08', '引用带来源级别，L3 须标注未核实，L4 标仅供参考'],
+      ['FR-QA-09', '置信度与来源级别继承'],
+      ['FR-QA-17', '同类问题按问题模板与对象槽位复用检索路径'],
+      ['FR-QA-18', '对象侧无事实即回退完整检索，不跨对象代值'],
+      ['FR-QA-20', '图谱路径按答案形态展示：关系链路必出，单点取值不出'],
+      ['FR-QA-21', '图上不得出现未参与结论的节点（负向需求）']
+    ],
+    gap: [
+      ['复现的判定', 'FR-QA-05 要求事实类问题可复现，但「复现通过」由谁判定、记录在哪，文档没落。'],
+      ['拒答后的出口', '拒答给的是「下一步建议」，但这些建议点击后没有后续动作，缺少直达补齐入口。'],
+      ['置信度的算法', '置信度是模型自评还是按命中策略映射，两种口径给出的数值含义完全不同。'],
+      ['路径复用的失效', '留存路径对应的对象版本变更后是否失效，未定；沿用旧路径可能定位到已下线的切片，此时按旧路径走还是强制回退，需要口径。'],
+      ['路径图的级别', '图上节点与边的来源级别常常不一致（L1a 的调用边 + L3 生成的节点），整张图按哪一级标注、能不能按边过滤到「只留 L1a」，现在没有口径。FR-QA-21 只管住「画什么」，管不住「画出来的东西各自算什么级别」。'],
+      ['跨形态的提问', '「这个上限是多少，改它会影响谁」同时含单点取值与关系链路两种答案。按哪一形态决定附不附图，还是两种答案各附一段，表 10-4 没有给判定顺序。']
+    ]
+  },
+  s8: {
+    title: '屏⑧ 系统状态',
+    cr1: '系统状态', cr2: '运行概览', tab: '系统状态',
+    req: [
+      ['NFR-01', '问答首字响应 ≤ 3 s'],
+      ['NFR-02', '单程序知识文档生成 ≤ 60 s'],
+      ['NFR-03', '委托方环境运行'],
+      ['NFR-04', '断网可用'],
+      ['FR-DAT-02', '数据保留期'],
+      ['FR-DAT-03', '容量口径']
+    ],
+    gap: [
+      ['并发口径', '响应时间是在多少并发下测的？单用户还是 20 并发，差距很大。'],
+      ['降级策略', '生成任务排队超过阈值时的降级与提示，未定义。']
+    ]
+  }
+};
+
+/* ================= 导航 ================= */
+let cur = 's1';
+const tabs = [];
+
+function renderTabs() {
+  const el = document.getElementById('tabbar');
+  el.innerHTML = tabs.map((id, i) =>
+    `<div class="tab${id === cur ? ' on' : ''}" onclick="go('${id}')">${SPEC[id].tab}` +
+    (i > 0 ? `<span class="x" onclick="event.stopPropagation();closeTab('${id}')">✕</span>` : '') +
+    `</div>`).join('');
+}
+
+function closeTab(id) {
+  const i = tabs.indexOf(id);
+  if (i < 0) return;
+  tabs.splice(i, 1);
+  if (id === cur) { go(tabs[Math.max(0, i - 1)] || 's1'); return; }
+  renderTabs();
+}
+
+function go(id) {
+  cur = id;
+  document.querySelectorAll('.scr').forEach(s => { s.hidden = s.id !== id; });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('on', n.dataset.go === id));
+  const s = SPEC[id];
+  document.getElementById('cr1').textContent = s.cr1;
+  document.getElementById('cr2').textContent = s.cr2;
+  if (!tabs.includes(id)) tabs.push(id);
+  renderTabs();
+  document.getElementById('view').scrollTop = 0;
+  renderSpec();
+}
+
+document.querySelectorAll('.nav-item[data-go]').forEach(n =>
+  n.addEventListener('click', () => go(n.dataset.go)));
+
+/* ================= 注释模式 ================= */
+function toggleNotes() {
+  document.body.classList.toggle('notes');
+  document.getElementById('noteBtn').classList.toggle('on');
+  renderSpec();
+}
+
+function renderSpec() {
+  const s = SPEC[cur];
+  if (!s) return;
+  document.getElementById('spec').innerHTML = `
+    <div class="sec">
+      <div class="sec-t">${s.title} · 对应需求</div>
+      ${s.req.map(([c, t]) => `<div class="row"><code>${c}</code><span>${t}</span></div>`).join('')}
+    </div>
+    <div class="sec">
+      <div class="sec-t">本屏暴露的缺口</div>
+      ${s.gap.map(([t, d]) => `<div class="gap"><b>${t}</b>${d}</div>`).join('')}
+    </div>
+    <div style="font-size:11px;color:var(--muted-fg);line-height:17px;border-top:1px solid var(--border);
+      padding-top:10px">
+      编号对应《核心系统迁移知识库需求规格书 v3.8》。此面板仅原型可见，实际产品不出现。
+    </div>`;
+}
+
+/* ================= 抽屉 ================= */
+function showDrawer(id) {
+  document.getElementById('mask').classList.add('on');
+  document.getElementById(id).classList.add('on');
+}
+
+function hideDrawer(id) {
+  document.getElementById(id).classList.remove('on');
+  if (!document.querySelector('.drawer.on')) document.getElementById('mask').classList.remove('on');
+}
+
+function closeAllDrawers() {
+  document.querySelectorAll('.drawer').forEach(d => d.classList.remove('on'));
+  document.getElementById('mask').classList.remove('on');
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllDrawers(); });
+
+/* 初始 */
+go('s1');
+</script>
+<style>
+.gp{border:1px solid hsl(212 25% 84%);border-radius:8px;background:hsl(210 45% 98.5%);padding:12px 14px 10px;margin-top:2px}
+.gp-note{font-size:11.5px;color:var(--muted-fg);line-height:18px;margin-top:6px;padding-top:7px;border-top:1px dashed hsl(212 20% 86%)}
+.rowi{display:flex;justify-content:space-between;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border-soft);font-size:12.5px}
+.rowi:last-of-type{border-bottom:0}
+.rowi span{color:var(--muted-fg);flex:0 0 auto}
+.rowi b{font-weight:500;color:var(--fg-85);text-align:right}
+</style>
+</body>
+</html>

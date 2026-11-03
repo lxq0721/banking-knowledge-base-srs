@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8">
+<title>资料管理链路 · 流程图与场景说明</title><style>
+*{box-sizing:border-box}
+body{margin:0;background:#F5F6F8;font-family:'Microsoft YaHei','PingFang SC',sans-serif;color:#1F1F1F}
+.page{max-width:1620px;margin:0 auto;background:#fff;padding:44px 48px 60px}
+h1{font-size:26px;margin:0 0 8px;letter-spacing:.5px}
+.sub{font-size:13.5px;color:#595959;margin:0 0 4px}
+.meta{font-size:12.5px;color:#8C8C8C;margin:0 0 28px}
+h2{font-size:18px;margin:40px 0 6px;padding-left:10px;border-left:4px solid #2F5597}
+.cap{font-size:12.6px;color:#595959;margin:0 0 14px}
+.fig{background:#fff;border:1px solid #E3E6EA;border-radius:6px;padding:10px;margin-bottom:10px;overflow:auto}
+.fig svg{display:block;width:100%;height:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;margin:8px 0 6px}
+th{background:#F2F4F7;font-weight:600;text-align:left;padding:9px 10px;border:1px solid #DCE0E5;color:#333}
+td{padding:9px 10px;border:1px solid #E3E6EA;vertical-align:top;line-height:1.55}
+tr:nth-child(even) td{background:#FAFBFC}
+td.n{font-weight:600;white-space:nowrap;color:#2F5597}
+th:first-child{white-space:nowrap}
+td.g{font-weight:600;color:#1E7B45;white-space:nowrap;text-align:center}
+.tag{display:inline-block;font-size:11.5px;padding:1px 7px;border-radius:9px;border:1px solid #1E7B45;color:#1E7B45;margin-left:4px}
+.note{font-size:13px;color:#4A4A4A;line-height:1.85;margin:12px 0 0}
+.note b{color:#1F1F1F}
+hr{border:0;border-top:1px solid #E3E6EA;margin:44px 0 0}
+@media print{body{background:#fff}.page{max-width:none;padding:0}.fig{border:0;padding:0}}
+</style></head><body>
+<div class="page">
+<h1>资料管理链路：流程图与场景说明</h1>
+<p class="sub">依据《核心系统迁移知识库需求规格书》v3.18（138 条需求 / 485 条 AC）　·　本页 v1.2，图 3-3 层序已按链路先后重排、原「缺口处置表」并为一节附注</p>
+<p class="meta">三张图分别回答：链路怎么走（图 3-1）、一次提交怎么判、重算到哪（图 3-2）、撤销清到哪一层（图 3-3）。绿框为 v3.18 补入的处置规则；红虚线仅剩跨应用系统一处，挂在表 A-3 待确认。</p>
+<div class="fig"><svg xmlns="http://www.w3.org/2000/svg" width="1500" height="2058" viewBox="0 0 1500 2058">
+<rect x="0.0" y="0.0" width="1500.0" height="2058.0" rx="6" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#404040"/></marker>
+<marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#2F5597"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#C00000"/></marker>
+</defs>
+<rect x="0.0" y="0.0" width="1500.0" height="1.0" rx="6" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<text x="64.0" y="54.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="24" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">图 3-1　资料管理全流程（导入 · 覆盖 · 更新 · 撤销 · 失效）</text>
+<text x="64.0" y="84.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据《核心系统迁移知识库需求规格书》v3.18；绿框为 v3.18 补入的处置规则，框内灰字为需求条目编号；逐文件判定见 图 3-2</text>
+<rect x="64.0" y="104.0" width="26.0" height="18.0" rx="3" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.3"/>
+<text x="96.0" y="118.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">系统处理</text>
+<rect x="194.0" y="104.0" width="26.0" height="18.0" rx="3" fill="#FDF3E7" stroke="#C55A11" stroke-width="1.3"/>
+<text x="226.0" y="118.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">人工动作</text>
+<rect x="324.0" y="104.0" width="26.0" height="18.0" rx="3" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1.3"/>
+<text x="356.0" y="118.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定结果 / 终止</text>
+<rect x="494.0" y="104.0" width="26.0" height="18.0" rx="3" fill="#EAF5EE" stroke="#1E7B45" stroke-width="1.4"/>
+<text x="526.0" y="118.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">v3.18 补入的规则</text>
+<rect x="674.0" y="104.0" width="26.0" height="18.0" rx="4" fill="#FDECEC" stroke="#C00000" stroke-width="1.3" stroke-dasharray="3 2"/>
+<text x="706.0" y="118.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">待确认口径（表 A-3）</text>
+<path d="M 740 285 L 740 359" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 740 520 L 740 594" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 740 734 L 740 808" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 740 927 L 740 1001" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 740 1162 L 740 1236" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 740 1418 L 740 1492" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 740 1611 L 740 1685" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="400.0" y="168.0" width="680.0" height="117.0" rx="6" fill="#FDF3E7" stroke="#C55A11" stroke-width="1.6"/>
+<circle cx="374" cy="198.0" r="17" fill="#FFFFFF" stroke="#C55A11" stroke-width="1.8"/>
+<text x="374.0" y="203.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#C55A11" font-weight="bold" text-anchor="middle" letter-spacing="0">01</text>
+<text x="426.0" y="204.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">提交批次</text>
+<rect x="996.0" y="183.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#C55A11" stroke-width="1.2"/>
+<text x="1027.0" y="199.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#C55A11" font-weight="bold" text-anchor="middle" letter-spacing="0">人工</text>
+<text x="426.0" y="228.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-IMP-21</text>
+<text x="426.0" y="252.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">手工提交，系统不扫描目录、不自动建立批次；提交即触发预检</text>
+<rect x="400.0" y="361.0" width="680.0" height="159.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.6"/>
+<circle cx="374" cy="391.0" r="17" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.8"/>
+<text x="374.0" y="396.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">02</text>
+<text x="426.0" y="397.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">预检与去重判定</text>
+<rect x="996.0" y="376.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.2"/>
+<text x="1027.0" y="392.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">系统</text>
+<text x="426.0" y="421.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-IMP-10、FR-IMP-15、FR-IMP-18、FR-IMP-20、表 4-5</text>
+<text x="426.0" y="445.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">按路径、内容指纹与文件名主干判定：重复提交 / 同路径变更 / 新增 / 疑似同一份</text>
+<text x="426.0" y="466.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">「疑似同一份」在预检中列候选，由人指定接续，不自动并入</text>
+<text x="426.0" y="487.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">扩展名初判、内容特征确认；同一文档的多种格式标为副本，原件全留、只解析一份</text>
+<rect x="400.0" y="596.0" width="680.0" height="138.0" rx="6" fill="#FDF3E7" stroke="#C55A11" stroke-width="1.6"/>
+<circle cx="374" cy="626.0" r="17" fill="#FFFFFF" stroke="#C55A11" stroke-width="1.8"/>
+<text x="374.0" y="631.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#C55A11" font-weight="bold" text-anchor="middle" letter-spacing="0">03</text>
+<text x="426.0" y="632.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">归属与标签</text>
+<rect x="996.0" y="611.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#C55A11" stroke-width="1.2"/>
+<text x="1027.0" y="627.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#C55A11" font-weight="bold" text-anchor="middle" letter-spacing="0">人工</text>
+<text x="426.0" y="656.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-IMP-05、表 4-2</text>
+<text x="426.0" y="680.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">应用系统必填且唯一；业务线、资料类型、来源、版本、密级由人选定，系统不得代选</text>
+<text x="426.0" y="701.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">选不出时置「待确定」，后续补齐</text>
+<rect x="400.0" y="810.0" width="680.0" height="117.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.6"/>
+<circle cx="374" cy="840.0" r="17" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.8"/>
+<text x="374.0" y="845.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">04</text>
+<text x="426.0" y="846.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">原件留存</text>
+<rect x="996.0" y="825.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.2"/>
+<text x="1027.0" y="841.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">系统</text>
+<text x="426.0" y="870.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-IMP-03、表 11-1</text>
+<text x="426.0" y="894.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">只读快照，与系统同生命周期；转码只改字符编码，不改内容</text>
+<rect x="400.0" y="1003.0" width="680.0" height="159.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.6"/>
+<circle cx="374" cy="1033.0" r="17" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.8"/>
+<text x="374.0" y="1038.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">05</text>
+<text x="426.0" y="1039.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">解析</text>
+<rect x="996.0" y="1018.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.2"/>
+<text x="1027.0" y="1034.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">系统</text>
+<text x="426.0" y="1063.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-PRS-09、FR-PRS-10、FR-PRS-13、表 5-1</text>
+<text x="426.0" y="1087.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">程序出段落与调用关系、copybook 出字段、JCL 出作业链路与 DD 映射</text>
+<text x="426.0" y="1108.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">文档按不跨节的段落块切，表格按工作表切（合并单元格取左上角）</text>
+<text x="426.0" y="1129.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">未识别的项登记并从可切片范围排除，不得以推测值填充</text>
+<rect x="400.0" y="1238.0" width="680.0" height="180.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.6"/>
+<circle cx="374" cy="1268.0" r="17" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.8"/>
+<text x="374.0" y="1273.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">06</text>
+<text x="426.0" y="1274.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">知识生成</text>
+<rect x="996.0" y="1253.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.2"/>
+<text x="1027.0" y="1269.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">系统</text>
+<text x="426.0" y="1298.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-GEN-05、FR-GEN-06、FR-GEN-13、FR-GEN-14、FR-GEN-32</text>
+<text x="426.0" y="1322.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">按范围全量成文；节数与节序不随资料增减，缺件只在节后标「资料不足」并注明缺哪一类</text>
+<text x="426.0" y="1343.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">齐备度按五档评估（表 6-6）：仅程序 → 加 copybook → 加 JCL → 加技术文档 → </text>
+<text x="426.0" y="1364.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">加业务文档</text>
+<text x="426.0" y="1385.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">资料变更后只重算直接引用它的单元与四类跨文件汇总（含项目知识总览），不触发全系统重算</text>
+<rect x="400.0" y="1494.0" width="680.0" height="117.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.6"/>
+<circle cx="374" cy="1524.0" r="17" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.8"/>
+<text x="374.0" y="1529.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">07</text>
+<text x="426.0" y="1530.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">入库建图</text>
+<rect x="996.0" y="1509.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.2"/>
+<text x="1027.0" y="1525.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">系统</text>
+<text x="426.0" y="1554.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-STO-02、FR-STO-05、FR-STO-24、表 8-2</text>
+<text x="426.0" y="1578.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">切片五项元数据缺一不进检索库；同一对象按唯一键收敛；范围外引用只落占位节点</text>
+<rect x="400.0" y="1687.0" width="680.0" height="138.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.6"/>
+<circle cx="374" cy="1717.0" r="17" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.8"/>
+<text x="374.0" y="1722.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">08</text>
+<text x="426.0" y="1723.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="19" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">问答使用</text>
+<rect x="996.0" y="1702.0" width="62.0" height="24.0" rx="12" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.2"/>
+<text x="1027.0" y="1718.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#2F5597" font-weight="bold" text-anchor="middle" letter-spacing="0">系统</text>
+<text x="426.0" y="1747.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-QA-05、表 7-5、表 10-2</text>
+<text x="426.0" y="1771.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">索引通道答事实、解释通道答含义；按来源级别作答，事实类须给出处与行号</text>
+<text x="426.0" y="1792.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.6" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">资料失效后其产物为「已废止」，不进入回答依据</text>
+<path d="M 206 174 L 196 174 L 196 921 L 206 921" fill="none" stroke="#BFBFBF" stroke-width="1.2"/>
+<text x="180" y="547.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#8C8C8C" text-anchor="middle" transform="rotate(-90 180 547.5)">接入</text>
+<path d="M 206 1009 L 196 1009 L 196 1156 L 206 1156" fill="none" stroke="#BFBFBF" stroke-width="1.2"/>
+<text x="180" y="1082.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#8C8C8C" text-anchor="middle" transform="rotate(-90 180 1082.5)">解析</text>
+<path d="M 206 1244 L 196 1244 L 196 1412 L 206 1412" fill="none" stroke="#BFBFBF" stroke-width="1.2"/>
+<text x="180" y="1328.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#8C8C8C" text-anchor="middle" transform="rotate(-90 180 1328.0)">生成</text>
+<path d="M 206 1500 L 196 1500 L 196 1605 L 206 1605" fill="none" stroke="#BFBFBF" stroke-width="1.2"/>
+<text x="180" y="1552.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#8C8C8C" text-anchor="middle" transform="rotate(-90 180 1552.5)">入库</text>
+<path d="M 206 1693 L 196 1693 L 196 1819 L 206 1819" fill="none" stroke="#BFBFBF" stroke-width="1.2"/>
+<text x="180" y="1756.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#8C8C8C" text-anchor="middle" transform="rotate(-90 180 1756.0)">问答</text>
+<rect x="1140.0" y="367.0" width="330.0" height="86.0" rx="6" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1.6"/>
+<text x="1158.0" y="393.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">重复提交</text>
+<text x="1158.0" y="415.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">并入已有记录，不进入后续环节</text>
+<text x="1158.0" y="435.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">沿用上批次结果，不再解析</text>
+<rect x="1140.0" y="501.0" width="330.0" height="118.0" rx="6" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1.6"/>
+<text x="1158.0" y="527.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">同路径变更</text>
+<text x="1158.0" y="549.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">新版本入库、保留历史版本</text>
+<text x="1158.0" y="569.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">汇回 05 解析 → 06 重生成</text>
+<text x="1158.0" y="589.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">旧切片与旧版知识文档下线</text>
+<path d="M 1080 395 L 1138 411" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="1096.8" y="377.5" width="34.5" height="18.5" rx="3" fill="#FFFFFF" stroke="none" stroke-width="0"/><text x="1114.0" y="389.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">重复</text>
+<path d="M 1080 441 L 1138 551" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="1104.8" y="423.5" width="34.5" height="18.5" rx="3" fill="#FFFFFF" stroke="none" stroke-width="0"/><text x="1122.0" y="435.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">变更</text>
+<rect x="731.6" y="548.5" width="108.7" height="18.5" rx="3" fill="#FFFFFF" stroke="none" stroke-width="0"/><text x="786.0" y="560.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">新增 → 继续主链</text>
+<path d="M 1305 619 L 1305 1082 L 1082 1082" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="1140.0" y="1506.5" width="330.0" height="112.0" rx="6" fill="#FDF3E7" stroke="#C55A11" stroke-width="1.6"/>
+<text x="1158.0" y="1532.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">撤销批次</text>
+<text x="1392.0" y="1532.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#C55A11" font-weight="bold" text-anchor="start" letter-spacing="0">人工</text>
+<text x="1158.0" y="1554.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-IMP-16</text>
+<text x="1158.0" y="1576.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">按批次撤销已完成的导入</text>
+<text x="1158.0" y="1596.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">原件快照保留，不删除</text>
+<path d="M 1080 1552 L 1138 1552" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="1086.8" y="1532.0" width="34.5" height="18.5" rx="3" fill="#FFFFFF" stroke="none" stroke-width="0"/><text x="1104.0" y="1543.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">撤销</text>
+<path d="M 1305 1618 L 1305 1650" fill="none" stroke="#1E7B45" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="1140.0" y="1652.5" width="330.0" height="154.0" rx="6" fill="#EAF5EE" stroke="#1E7B45" stroke-width="1.6"/>
+<text x="1158.0" y="1678.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1E7B45" font-weight="bold" text-anchor="start" letter-spacing="0">知识层处置</text>
+<text x="1374.0" y="1678.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.2" fill="#1E7B45" font-weight="bold" text-anchor="start" letter-spacing="0">FR-GEN-33</text>
+<text x="1158.0" y="1702.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">知识文档转「已废止」，引用改占位</text>
+<text x="1158.0" y="1723.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">切片与向量退出检索（FR-STO-09）</text>
+<text x="1158.0" y="1744.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">图谱节点与关系下线（FR-STO-27）</text>
+<text x="1158.0" y="1765.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">四类汇总产物随之重算</text>
+<path d="M 1305 1806 L 1305 1834" fill="none" stroke="#C55A11" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="1140.0" y="1836.5" width="330.0" height="132.0" rx="6" fill="#FDF3E7" stroke="#C55A11" stroke-width="1.6"/>
+<text x="1158.0" y="1862.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">单份停用 · 整包重传未出现</text>
+<text x="1392.0" y="1862.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.5" fill="#C55A11" font-weight="bold" text-anchor="start" letter-spacing="0">人工</text>
+<text x="1158.0" y="1884.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">依据：FR-GEN-33 表 6-9、FR-IMP-21</text>
+<text x="1158.0" y="1906.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">单份停用可恢复；整包须先声明范围，</text>
+<text x="1158.0" y="1926.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">未声明时不做比对</text>
+<text x="1158.0" y="1948.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">两者处置同上，同批其他资料不受影响</text>
+<path d="M 64 2018 L 1436 2018" fill="none" stroke="#D9D9D9" stroke-width="1"/>
+<text x="64.0" y="2046.5" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">注：右侧四条为资料再次提交、撤销或失效时的路径；绿框为 v3.18 补入的处置规则，撤销落到哪一层见图 3-3。</text>
+</svg></div>
+<p class="cap">图 3-1　主干八步，右侧为资料再次提交、撤销与失效的四条路径；逐文件判定展开见 图 3-2。</p>
+<div class="fig"><svg xmlns="http://www.w3.org/2000/svg" width="1500" height="1128" viewBox="0 0 1500 1128">
+<rect x="0.0" y="0.0" width="1500.0" height="1128.0" rx="6" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#404040"/></marker>
+<marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#2F5597"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#C00000"/></marker>
+</defs>
+<text x="64.0" y="52.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="22" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">图 3-2　一次提交的逐文件判定与重算范围</text>
+<text x="64.0" y="80.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定单位是文件，不是批次：同一套出口覆盖单份替换、整包重传、多系统分别提交三种形态</text>
+<rect x="300.0" y="112.0" width="450.0" height="100.0" rx="6" fill="#F7F7F7" stroke="#595959" stroke-width="1.5" stroke-dasharray="5 3"/>
+<text x="320.0" y="141.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">一次提交：单份 · 若干份 · 整包</text>
+<text x="320.0" y="166.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">按（路径，内容指纹，文件名主干）逐份比对</text>
+<text x="320.0" y="190.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定结果逐份落到五个提交出口；人工停用另设一个入口</text>
+<rect x="810.0" y="116.0" width="24.0" height="16.0" rx="3" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1.2"/>
+<text x="840.0" y="129.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">不触发重算</text>
+<rect x="938.0" y="116.0" width="24.0" height="16.0" rx="3" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.2"/>
+<text x="968.0" y="129.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">触发重算</text>
+<rect x="1050.0" y="116.0" width="24.0" height="16.0" rx="3" fill="#EAF5EE" stroke="#1E7B45" stroke-width="1.3"/>
+<text x="1080.0" y="129.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">v3.18 补入的出口</text>
+<rect x="110.0" y="246.0" width="610.0" height="96.0" rx="6" fill="#FFFFFF" stroke="#8C8C8C" stroke-width="1.5"/>
+<text x="128.0" y="273.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">重复提交</text>
+<text x="128.0" y="296.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定：路径、指纹均与已有记录相同</text>
+<text x="128.0" y="320.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">处置：并入已有记录、累计重复次数；不重解析、不重算</text>
+<rect x="110.0" y="366.0" width="610.0" height="96.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.5"/>
+<text x="128.0" y="393.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">同路径变更</text>
+<text x="128.0" y="416.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定：路径相同、内容指纹不同</text>
+<text x="128.0" y="440.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">处置：新版本入库（留历史）→ 重解析该文件 → 触发重算</text>
+<rect x="110.0" y="486.0" width="610.0" height="96.0" rx="6" fill="#EDF3FA" stroke="#2F5597" stroke-width="1.5"/>
+<text x="128.0" y="513.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">新增</text>
+<text x="128.0" y="536.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定：路径与指纹均未出现过</text>
+<text x="128.0" y="560.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">处置：新建记录 → 导入解析 → 触发重算</text>
+<rect x="110.0" y="606.0" width="610.0" height="96.0" rx="6" fill="#EAF5EE" stroke="#1E7B45" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="128.0" y="633.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">疑似同一份</text>
+<text x="128.0" y="656.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定：路径与指纹均未命中，文件名主干相同（改名、移动、换格式）</text>
+<text x="128.0" y="680.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">处置：预检列候选，由人指定接续：接续的按「同路径变更」，否则按「新增」</text>
+<text x="628.0" y="633.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="11.6" fill="#1E7B45" font-weight="bold" text-anchor="middle" letter-spacing="0">v3.18 补</text>
+<rect x="110.0" y="726.0" width="610.0" height="96.0" rx="6" fill="#EAF5EE" stroke="#1E7B45" stroke-width="1.5" stroke-dasharray="4 3"/>
+<text x="128.0" y="753.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">上次有、本次没有</text>
+<text x="128.0" y="776.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定：操作人声明整包重传后，与上一版比对得出</text>
+<text x="128.0" y="800.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">处置：按单份停用处置，清单标「本次未提交」；未声明整包时不做此比对</text>
+<text x="628.0" y="753.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="11.6" fill="#1E7B45" font-weight="bold" text-anchor="middle" letter-spacing="0">v3.18 补</text>
+<path d="M 300 164 L 70 164 L 70 774" fill="none" stroke="#404040" stroke-width="1.6"/>
+<path d="M 70 294 L 108 294" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 70 414 L 108 414" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 70 534 L 108 534" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 70 654 L 108 654" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<path d="M 70 774 L 108 774" fill="none" stroke="#404040" stroke-width="1.6" marker-end="url(#ag)"/>
+<rect x="110.0" y="862.0" width="610.0" height="96.0" rx="6" fill="#FDF3E7" stroke="#C55A11" stroke-width="1.5"/>
+<text x="128.0" y="889.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">单份停用（另一入口，非提交触发）</text>
+<text x="128.0" y="912.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">判定：操作人在导入清单对单份资料执行停用（FR-GEN-33 表 6-9）</text>
+<text x="128.0" y="936.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#1F1F1F" font-weight="normal" text-anchor="start" letter-spacing="0">处置：同下类失效处置，同批其他资料不受影响；可解除停用后重算</text>
+<rect x="790.0" y="300.0" width="650.0" height="340.0" rx="6" fill="#FFFFFF" stroke="#2F5597" stroke-width="1.5"/>
+<text x="808.0" y="332.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="16" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">重算范围（FR-GEN-32）</text>
+<text x="808.0" y="356.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.6" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">① 本文件</text>
+<text x="808.0" y="378.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">另出新版本（FR-GEN-05），旧切片下线（FR-STO-09）</text>
+<text x="808.0" y="424.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.6" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">② 直接引用它的单元</text>
+<text x="808.0" y="446.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">COPY 它的程序 · CALL 它的程序 · 访问它指向的表的程序</text>
+<text x="808.0" y="492.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.6" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">③ 跨文件汇总（四类）</text>
+<text x="808.0" y="514.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">数据实体说明 · 业务术语表 · 系统结构说明 · 项目知识总览</text>
+<text x="808.0" y="564.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.0" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">项目知识总览按条目刷新，不整份重生成</text>
+<rect x="800.0" y="552.0" width="630.0" height="76.0" rx="5" fill="#FDECEC" stroke="#C00000" stroke-width="1.3" stroke-dasharray="4 3"/>
+<text x="816.0" y="576.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.4" fill="#C00000" font-weight="bold" text-anchor="start" letter-spacing="0">④ 跨应用系统：引用方挂在别的应用系统下</text>
+<text x="816.0" y="598.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#C00000" font-weight="normal" text-anchor="start" letter-spacing="0">按应用系统边界处理，改动侧登记疑点（表 A-3 待确认）</text>
+<path d="M 720 414 L 788 414" fill="none" stroke="#2F5597" stroke-width="1.6" marker-end="url(#ab)"/>
+<path d="M 720 534 L 788 534" fill="none" stroke="#2F5597" stroke-width="1.6" marker-end="url(#ab)"/>
+<rect x="64.0" y="990.0" width="1400.0" height="96.0" rx="5" fill="#FFFFFF" stroke="#1E7B45" stroke-width="1.4" stroke-dasharray="4 3"/>
+<text x="82.0" y="1016.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="14.2" fill="#1E7B45" font-weight="bold" text-anchor="start" letter-spacing="0">口径已定（v3.18）　「单元」有定义，重算不限于本批范围</text>
+<text x="82.0" y="1040.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">「生成单元」= 一份程序 / 一份文档 / 一张工作表对应的一份产物（术语表）；补 copybook 时上一批的程序按引用关系纳入重算，与是否在本批次内无关。</text>
+<text x="82.0" y="1062.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">出口 4、5 与失效处置的判据同源：表 4-5 按文件名主干判「疑似同一份」，表 6-9 按操作人声明的整包范围判缺失。</text>
+<text x="64.0" y="1116.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.2" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">注：出口 4 的接续与人判挂在预检（FR-IMP-15）；出口 5 与「单份停用」的处置同为知识文档转「已废止」、切片与向量下线、图谱节点下线、四类汇总重算（FR-GEN-33）。</text>
+</svg></div>
+<p class="cap">图 3-2　判定单位是文件，不是批次——同一套出口同时覆盖单份替换、整包重传、多系统分别提交三种形态。</p>
+<div class="fig"><svg xmlns="http://www.w3.org/2000/svg" width="1500" height="642" viewBox="0 0 1500 642">
+<rect x="0.0" y="0.0" width="1500.0" height="642.0" rx="6" fill="#FFFFFF" stroke="none" stroke-width="0"/>
+<defs>
+<marker id="ag" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#404040"/></marker>
+<marker id="ab" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#2F5597"/></marker>
+<marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+  <path d="M 0 0 L 10 5 L 0 10 z" fill="#C00000"/></marker>
+</defs>
+<text x="64.0" y="52.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="22" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">图 3-3　资料的四层，与撤销动作的落点</text>
+<text x="64.0" y="80.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">层序即链路先后：原件 → 解析产物 → 知识产物 → 检索索引；排序依据是链路位置，处置依据看「可否重建」列</text>
+<text x="64.0" y="102.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.8" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">撤销清掉了知识产物的上游（解析结果）与下游（切片、向量、图谱），唯独它本身原先不失效——这是缺口 ① 的由来</text>
+<text x="150.0" y="132.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="bold" text-anchor="start" letter-spacing="0">数据层</text>
+<text x="810.0" y="132.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="bold" text-anchor="middle" letter-spacing="0">导入</text>
+<text x="930.0" y="132.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="bold" text-anchor="middle" letter-spacing="0">更新</text>
+<text x="1050.0" y="132.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="bold" text-anchor="middle" letter-spacing="0">撤销</text>
+<text x="1176.0" y="132.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13" fill="#595959" font-weight="bold" text-anchor="start" letter-spacing="0">可否重建</text>
+<rect x="150.0" y="158.0" width="1000.0" height="88.0" rx="5" fill="#FFFFFF" stroke="#BFBFBF" stroke-width="1.1"/>
+<path d="M 750 168 L 750 236" fill="none" stroke="#D9D9D9" stroke-width="1.1"/>
+<text x="168.0" y="180.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="11.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">第一层</text>
+<text x="168.0" y="206.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="16.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">原件快照</text>
+<text x="168.0" y="229.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">原始文件只读副本</text>
+<text x="810.0" y="208.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">执行</text>
+<text x="930.0" y="208.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">保留</text>
+<text x="1050.0" y="208.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">保留</text>
+<text x="1176.0" y="208.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.2" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">不可重建 · 与系统同生命周期 · 撤批不删</text>
+<rect x="150.0" y="256.0" width="1000.0" height="88.0" rx="5" fill="#FFFFFF" stroke="#BFBFBF" stroke-width="1.1"/>
+<path d="M 750 266 L 750 334" fill="none" stroke="#D9D9D9" stroke-width="1.1"/>
+<text x="168.0" y="278.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="11.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">第二层</text>
+<text x="168.0" y="304.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="16.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">解析产物</text>
+<text x="168.0" y="327.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">解析结果、结构化文本、表格抽取</text>
+<text x="810.0" y="306.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">执行</text>
+<text x="930.0" y="306.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">替换</text>
+<text x="1050.0" y="306.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">清除</text>
+<text x="1176.0" y="306.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.2" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">可按原件重建</text>
+<rect x="150.0" y="354.0" width="1000.0" height="88.0" rx="5" fill="#EAF5EE" stroke="#1E7B45" stroke-width="1.6"/>
+<path d="M 750 364 L 750 432" fill="none" stroke="#D9D9D9" stroke-width="1.1"/>
+<text x="168.0" y="376.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="11.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">第三层</text>
+<text x="168.0" y="402.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="16.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">知识产物</text>
+<text x="168.0" y="425.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">知识文档、业务术语表、疑点清单</text>
+<text x="810.0" y="404.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">执行</text>
+<text x="930.0" y="404.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="middle" letter-spacing="0">另出新版本</text>
+<text x="1050.0" y="404.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1E7B45" font-weight="bold" text-anchor="middle" letter-spacing="0">转已废止</text>
+<text x="1176.0" y="404.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.2" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">不可重建 · 保留全部版本</text>
+<rect x="150.0" y="452.0" width="1000.0" height="88.0" rx="5" fill="#FFFFFF" stroke="#BFBFBF" stroke-width="1.1"/>
+<path d="M 750 462 L 750 530" fill="none" stroke="#D9D9D9" stroke-width="1.1"/>
+<text x="168.0" y="474.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="11.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">第四层</text>
+<text x="168.0" y="500.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="16.5" fill="#1F1F1F" font-weight="bold" text-anchor="start" letter-spacing="0">检索索引</text>
+<text x="168.0" y="523.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">切片、向量、元数据五项、图谱节点</text>
+<text x="810.0" y="502.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">执行</text>
+<text x="930.0" y="502.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">重建</text>
+<text x="1050.0" y="502.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="13.2" fill="#1F1F1F" font-weight="normal" text-anchor="middle" letter-spacing="0">清除</text>
+<text x="1176.0" y="502.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.2" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">可按知识产物重建</text>
+<rect x="150.0" y="556.0" width="6.0" height="44.0" rx="3" fill="#1E7B45" stroke="#1E7B45" stroke-width="0"/>
+<text x="170.0" y="574.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="15" fill="#1E7B45" font-weight="bold" text-anchor="start" letter-spacing="0">已闭合（v3.18）　第三层不再被跳过</text>
+<text x="170.0" y="596.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.6" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">FR-GEN-33 把三种触发（整批撤销、单份停用、整包重传未出现）写成一条规则：知识产物转「已废止」，其下游切片与向量退出检索、图谱节点下线、四类汇总产物重算，原件快照保留。</text>
+<text x="64.0" y="632.0" font-family='Microsoft YaHei','PingFang SC','Hiragino Sans GB',sans-serif font-size="12.4" fill="#595959" font-weight="normal" text-anchor="start" letter-spacing="0">注：知识产物由模型生成、含人工修正，删掉无法按原文复现，故只出新版本、旧版留档；表 7-4 的「已废止」进入条件已同步为「源文件变更或资料失效」。</text>
+</svg></div>
+<p class="cap">图 3-3　四层按链路先后排列：原件 → 解析产物 → 知识产物 → 检索索引。撤销清掉了知识产物的上游与下游，唯独它本身原先不失效。</p>
+<h2>表 1　八种提交形态与系统实际处理</h2>
+<p class="cap">前两行是最常见的两类，后面按同一判据推出；「结论」一列标出在 v3.18 下是否闭环。</p>
+<table><thead><tr><th>编号</th><th>提交形态</th><th>系统怎么判</th><th>会做什么</th><th>结论</th></tr></thead><tbody><tr><td class="n">S1</td><td>首次整包；之后只换一个程序文件</td><td>该文件路径相同、指纹不同 → 同路径变更</td><td>新版本入库（留历史）→ 重解析该文件 → 重算：本文件、引用它的程序、四类汇总</td><td class="g">闭合</td></tr><tr><td class="n">S2</td><td>整包重传，包里只有部分文件变了</td><td>未变的 → 重复提交；变的 → 同路径变更；新的 → 新增</td><td>只有变更与新增的往后走，未变的不重解析、不重算</td><td class="g">闭合，且不会全量重跑</td></tr><tr><td class="n">S3</td><td>整包重传，其中有文件被删掉</td><td>操作人声明整包范围后，与上一版比对得出「上次有、本次无」</td><td>按单份停用处置：知识文档转「已废止」、切片下线、清单标「本次未提交」</td><td class="g">v3.18 闭合（表 6-9 第三情形）</td></tr><tr><td class="n">S4</td><td>同一文件改名并改了内容、或换格式（doc→pdf）</td><td>路径与指纹均未命中，但文件名主干相同 → 疑似同一份</td><td>预检列候选，由人指定接续：接续按「同路径变更」，否则按「新增」</td><td class="g">v3.18 闭合（表 4-5 第四情形）</td></tr><tr><td class="n">S5</td><td>A、B 两系统分别提交；之后只更新 B，且改到两者相接处</td><td>B 侧判同路径变更；A 侧那份资料没有变化</td><td>只重算 B 系统下引用它的程序；A 侧按应用系统边界不重算，改动侧登记疑点</td><td class="g">待确认（表 A-3）：边界待委托方定</td></tr><tr><td class="n">S6</td><td>先传程序，隔一批再补 copybook</td><td>后一批只有 copybook 是「新增」；程序不在本批范围内</td><td>按 FR-GEN-32 重算上一批的程序——「生成单元」已定义，重算不限于本批范围</td><td class="g">v3.18 闭合（术语表「生成单元」）</td></tr><tr><td class="n">S7</td><td>撤销批次后重新上传同一批资料</td><td>撤销时该批资料的知识层已转「已废止」；重传判「新增」</td><td>重新走全链；旧知识已下线，不会与新记录并存</td><td class="g">v3.18 闭合（FR-GEN-33）</td></tr><tr><td class="n">S8</td><td>打包方式变了（多套一层目录 / 换成压缩包前缀）</td><td>所有路径都不同 → 判「疑似同一份」或「新增」</td><td>预检中逐份确认是否接续；确认后可批量接续，不必整系统重建</td><td class="g">v3.18 闭合（表 4-5）</td></tr></tbody></table>
+<p class="note"><b>读图要点：</b>图 3-1 的第 02 步仍是唯一的分岔点，后面所有复杂度都来自它——一份资料进来先被归到四种情形之一，只有「变更」「新增」与经人接续的「疑似同一份」往后走。图 3-2 把这四种情形与两种失效触发摊开成一个逐文件判定表；图 3-3 说明为什么撤批之后问答不能继续拿到结论：知识产物删掉无法复现，只能另出新版本、旧版留档，所以它在撤销时必须显式失效。</p>
+<h2>附　本版改动与审查留痕</h2>
+<p class="note"><b>①②③⑥ · 失效与撤销：</b>撤销批清的是导入记录、解析产物与索引条目，知识文档与术语表不在清除范围（①）；只有整批撤销、没有单份撤销（②）；表 7-4 的「已废止」由源文件变更进入，却没写谁触发（③）；整包重传时「上次有、本次无」不落任何情形（⑥）。四条由 FR-GEN-33 与表 6-9 一并收口。</p>
+<p class="note"><b>④⑤⑦⑧ · 判定与重算：</b>判据只认路径与内容指纹、不认文档标识，改名换格式都判成新增（④），由表 4-5 第四情形接住；汇总产物只列三类、漏了项目知识总览（⑤），由 FR-GEN-32 补入；「生成单元」未定义导致重算范围说不清（⑧），术语表已补。⑦ 跨应用系统的引用方是否重算，取决于委托方系统边界如何划分，不写成条目，挂表 A-3，确认前按应用系统边界处理。</p>
+<p class="note"><b>改动量：</b>新增 1 条需求（FR-GEN-33，必须）与 1 张三情形表（表 6-9）；表 4-5 加一行、FR-GEN-32 加一项、表 7-4 改一处进入条件、术语表加「生成单元」、表 A-3 加一项。合计 137 → 138 条，AC 481 → 485。编号 ①～⑧ 与附录 C 的记录一一对应。</p>
+</div></body></html>

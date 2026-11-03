@@ -1,0 +1,114 @@
+﻿执行批次,执行时间,编号,本次角色 / 范围,问题原文（快照）,实际输出（摘要）,命中要点,漏要点,错引 / 越界引用,标注是否齐全,耗时 ms,判定结果,判定方式,执行人,证据位置,备注
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-001,default / COBOL 应用 / 本地仓库,CUSTCOPY 里 ACCT-BALANCE 的 PIC 子句在哪一行，精度是多少？,（桩）CUSTCOPY.cpy；9(7)V99。,CUSTCOPY.cpy / 9(7)V99,ACCT-BALANCE,,不适用,2185,部分通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:30,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-002,default / COBOL 应用 / 本地仓库,TRAN-CODE 这个字段定义多长？,（桩）未查询到相关信息。,,TRAN-CODE / X(6) / TRANREC.cpy,,不适用,3916,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-003,default / COBOL 应用 / 本地仓库,SAM1 的 PROGRAM-ID 是什么？,（桩）PROGRAM-ID；SAM1；SAM1LIB。,PROGRAM-ID / SAM1 / SAM1LIB,,,不适用,3477,通过,自动,脚本,COBOL/SAM1.cbl:35,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-004,default / COBOL 应用 / 本地仓库,SAM2 的 PROCEDURE DIVISION USING 后面跟了几个参数，分别是什么？,（桩）未查询到相关信息。,,PROCEDURE DIVISION USING / TRAN-OK / TRAN-MSG,,不适用,2338,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-JCL-005,default / 作业与构建 / 本地仓库,RUN.jcl 里编译 SAM2 那一步的步骤名和程序名是什么？,（桩）CMPLSAM2；IGYCRCTL；NODYN。,CMPLSAM2 / IGYCRCTL / NODYN,,,不适用,2706,通过,自动,脚本,JCL/RUN.jcl:42,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-JCL-006,default / 作业与构建 / 本地仓库,ALLOCATE.jcl 给 CUSTFILE 分配的 RECFM、LRECL、BLKSIZE 是多少？,（桩）VB；600；604。依据：JCL/ALLOCATE.jcl:80-83。,VB / 600 / 604,,,不适用,1689,通过,自动,脚本,JCL/ALLOCATE.jcl:80-83,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-PLI-007,default / PL/I 应用 / 本地仓库,PSAM1 里 CUSTRPT 声明成什么类型的文件？,（桩）CUSTRPT；STREAM；PRINT。,CUSTRPT / STREAM / PRINT,,,不适用,1000,通过,自动,脚本,PLI/PSAM1.pli:38,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFG-008,default / 工程配置 / 本地仓库,zapp.yaml 里 COBOL 的本地 copybook 目录是怎么写的？,（桩）未查询到相关信息。,,cobol-copybooks / COPYBOOK / local,,不适用,3489,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-ASM-009,default / HLASM 应用 / 本地仓库,ASAM1 的 CSECT 名是什么，定义在第几行？,（桩）ASAM1；CSECT。依据：ASM/ASAM1.asm:2。,ASAM1 / CSECT,,,不适用,2779,通过,自动,脚本,ASM/ASAM1.asm:2,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-REX-010,default / REXX 脚本 / 本地仓库,RSAM1 用哪个指令把文件读进 STEM 变量？,（桩）EXECIO；DISKR。,EXECIO / DISKR,STEM,,不适用,905,部分通过,自动,脚本,REXX/RSAM1.rexx:32,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-011,default / COBOL 应用 / 本地仓库,DATETIME.cpy 里 CURRENT-YEAR 的 PIC 是几位？,（桩）未查询到相关信息。,,CURRENT-YEAR / 9(2) / DATETIME,,不适用,3632,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-012,default / COBOL 应用 / 本地仓库,REPTTOTL.cpy 里 NUM-TRAN-RECS 怎么定义的？,（桩）未查询到相关信息。,,NUM-TRAN-RECS / COMP-3,,不适用,4609,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-013,default / COBOL 应用 / 本地仓库,SAM1 里 REPORT-RECORD 有多长？,（桩）未查询到相关信息。,,REPORT-RECORD / 132 / 133,,不适用,2604,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-JCL-014,default / 作业与构建 / 本地仓库,RUNPSAM1.jcl 里 PL/I 编译用哪个程序名？,（桩）IBMZPLI；LAXIF。,IBMZPLI / LAXIF,,,不适用,3783,通过,自动,脚本,JCL/RUNPSAM1.jcl:35,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-PLI-015,default / PL/I 应用 / 本地仓库,CUSTPLI.inc 里 CUSTFILE_RECORD 声明多长？,（桩）CUSTFILE_RECORD；CHAR(80)；BASED。依据：INCLUDES/CUSTPLI.inc:9。,CUSTFILE_RECORD / CHAR(80) / BASED,,,不适用,947,通过,自动,脚本,INCLUDES/CUSTPLI.inc:9,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFG-016,default / 工程配置 / 本地仓库,multiroot 那份 zapp.yaml 里 syslib 指向哪两个目录？,（桩）cust；trans；syslib。,cust / trans / syslib,,,不适用,3850,通过,自动,脚本,multiroot/sam/zapp.yaml:17-24,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-021,default / COBOL 应用 / 本地仓库,客户号存在哪个字段里，多长？,（桩）CUST-ID；X(5)。依据：COPYBOOK/CUSTCOPY.cpy:26。,CUST-ID / X(5),,,不适用,4504,通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:26,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-022,default / COBOL 应用 / 本地仓库,客户余额那个字段叫什么，能存多大的数？,（桩）未查询到相关信息。,,ACCT-BALANCE / 9(7)V99,,不适用,3127,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-023,default / COBOL 应用 / 本地仓库,今年累计订单数放在哪个字段？,（桩）ORDERS-YTD。,ORDERS-YTD,9(5),,不适用,1837,部分通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:32,命中 1/2
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-024,default / COBOL 应用 / 本地仓库,客户每个月的金额是怎么存的，存几个月？,（桩）MONTH；OCCURS 12；108。,MONTH / OCCURS 12 / 108,,,不适用,3771,通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:38,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-025,default / COBOL 应用 / 本地仓库,交易里指定「要改哪个字段」的那个字段是哪个？,（桩）TRAN-FIELD-NAME；X(10)。,TRAN-FIELD-NAME / X(10),,,不适用,4019,通过,自动,脚本,COPYBOOK/TRANREC.cpy:20,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-026,default / COBOL 应用 / 本地仓库,交易里的操作动作（改/加/删）存在哪里？,（桩）TRAN-ACTION；X(8)；TRAN-CODE。依据：COPYBOOK/TRANREC.cpy:18。,TRAN-ACTION / X(8) / TRAN-CODE,,,不适用,3824,通过,自动,脚本,COPYBOOK/TRANREC.cpy:18,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-027,default / COBOL 应用 / 本地仓库,报表里那个「一共处理了多少笔交易」的计数器叫什么？,（桩）NUM-TRAN-RECS；COMP-3。,NUM-TRAN-RECS / COMP-3,,,不适用,4581,通过,自动,脚本,COPYLIB-MVS/REPTTOTL.cpy:11,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-028,default / COBOL 应用 / 本地仓库,更新后的客户文件写到哪个 DD 上？,（桩）CUSTOUT；CUSTOMER-FILE-OUT。,CUSTOUT / CUSTOMER-FILE-OUT,,,不适用,1197,通过,自动,脚本,COBOL/SAM1.cbl:44-46,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-029,default / COBOL 应用 / 本地仓库,读交易的那个输入文件 DD 叫什么？,（桩）TRANFILE；TRANSACTION-FILE。依据：COBOL/SAM1.cbl:48-49。,TRANFILE / TRANSACTION-FILE,,,不适用,1450,通过,自动,脚本,COBOL/SAM1.cbl:48-49,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-030,default / COBOL 应用 / 本地仓库,报表输出到哪个 DD？,（桩）CUSTRPT；REPORT-FILE；133。依据：COBOL/SAM1.cbl:51-52。,CUSTRPT / REPORT-FILE / 133,,,不适用,3177,通过,自动,脚本,COBOL/SAM1.cbl:51-52,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-PLI-031,default / PL/I 应用 / 本地仓库,PL/I 里表示客户余额的字段叫什么？格式是什么？,（桩）未查询到相关信息。,,ACCT_BALANCE / 9999999V99,,不适用,3162,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-032,default / COBOL 应用 / 本地仓库,客户名称字段多长？,（桩）未查询到相关信息。,,NAME / X(17),,不适用,3162,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-033,default / COBOL 应用 / 本地仓库,记录类型那个标志位在哪，是什么类型？,（桩）未查询到相关信息。,,REC-TYPE / PIC X,,不适用,929,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-JCL-034,default / 作业与构建 / 本地仓库,跑批时给作业分配了多大内存？,（桩）REGION；144M。依据：JCL/RUN.jcl:1-2。,REGION / 144M,,,不适用,2511,通过,自动,脚本,JCL/RUN.jcl:1-2,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-041,default / COBOL 应用 / 本地仓库,一条 UPDATE 交易从读到写，中间经过哪些处理步骤？,（桩）未查询到相关信息。,,720-POSITION-CUST-FILE / CALL SAM2 / 740-WRITE-CUSTOUT-FILE,,不适用,4386,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-042,default / COBOL 应用 / 本地仓库,CUSTCOPY 描述的一条客户记录（A 类）总共多少字节？,（桩）387；OCCURS 12；NOTES。依据：COPYBOOK/CUSTCOPY.cpy:24-42。,387 / OCCURS 12 / NOTES,,,不适用,4000,通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:24-42,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-043,default / COBOL 应用 / 本地仓库,CUSTOUT 的 LRECL 是 600，但按 copybook 记录只有 387 字节，这两个数怎么对上？,（桩）596；600。,596 / 600,387,,不适用,3333,部分通过,自动,脚本,COBOL/SAM1.cbl:66,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-JCL-046,default / 作业与构建 / 本地仓库,编译 SAM1 要用到哪几个数据集？,（桩）SYSLIB；MYLIB；SYSLIN。依据：JCL/RUN.jcl:72-78。,SYSLIB / MYLIB / SYSLIN,,,不适用,867,通过,自动,脚本,JCL/RUN.jcl:72-78,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-JCL-047,default / 作业与构建 / 本地仓库,从零把 SAM1 跑起来，作业要按什么顺序做哪些事？,（桩）CMPLSAM2；LINKSAM1。,CMPLSAM2 / LINKSAM1,CUSTOUT,,不适用,1905,部分通过,自动,脚本,JCL/ALLOCATE.jcl:50,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-048,default / COBOL 应用 / 本地仓库,SAM1LIB 里的日期结构和报表计数器是从哪个库取来的？,（桩）MYFILE；MYLIB。,MYFILE / MYLIB,COPYLIB,,不适用,3866,部分通过,自动,脚本,COBOL/SAM1LIB.cbl:84,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-CPY-049,default / COBOL 应用 / 本地仓库,一条 'UPDATE 00001A        REPLACE  NAME       01 IBM-RTP' 是怎么按位置拆成各字段的？,（桩）TRAN-KEY；TRAN-ACTION；TRAN-FIELD-NAME。依据：COPYBOOK/TRANREC.cpy:10-24。,TRAN-KEY / TRAN-ACTION / TRAN-FIELD-NAME,,,不适用,2352,通过,自动,脚本,COPYBOOK/TRANREC.cpy:10-24,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-050,default / COBOL 应用 / 本地仓库,SAM2 里处理 'CRUNCH' 的那段在做什么？谁触发它？,（桩）未查询到相关信息。,,CRUNCH-CPU-LOOPS / MONTH-AVERAGE / 310-CRUNCH-LOOP,,不适用,2929,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-051,default / COBOL 应用 / 本地仓库,报表最后那段统计打印了哪几类交易？计数从哪来？,（桩）NUM-ADD-REQUESTS；NUM-DELETE；NUM-UPDATE。,NUM-ADD-REQUESTS / NUM-DELETE / NUM-UPDATE,,,不适用,4642,通过,自动,脚本,COBOL/SAM1.cbl:480-504,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-PLI-052,default / PL/I 应用 / 本地仓库,PSAM1 和 PSAM2 之间怎么分工、结果怎么回给主程序？,（桩）PSAM2；BALANCE_AVG；CUSTOMER_BALANCE_STATS。依据：PLI/PSAM1.pli:101。,PSAM2 / BALANCE_AVG / CUSTOMER_BALANCE_STATS,,,不适用,3027,通过,自动,脚本,PLI/PSAM1.pli:101,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-PLI-053,default / PL/I 应用 / 本地仓库,PL/I 的客户记录 80 字节是怎么排布的？,（桩）CHAR(80)；ACCT_BALANCE；OCCUPATION。,CHAR(80) / ACCT_BALANCE / OCCUPATION,,,不适用,2671,通过,自动,脚本,INCLUDES/CUSTPLI.inc:9-29,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-ASM-054,default / HLASM 应用 / 本地仓库,ASAM1 读什么、写什么，各自什么格式？,（桩）FILEIN；FILEOUT；80。,FILEIN / FILEOUT / 80,,,不适用,2969,通过,自动,脚本,ASM/ASAM1.asm:24-28,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-REX-055,default / REXX 脚本 / 本地仓库,RSAM1 为什么要 DROP newvar.？不 DROP 会怎样？,（桩）DROP newvar；STEM；EXECIO。依据：REXX/RSAM1.rexx:91。,DROP newvar / STEM / EXECIO,,,不适用,3234,通过,自动,脚本,REXX/RSAM1.rexx:91,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFG-056,default / 工程配置 / 本地仓库,zapp.yaml 给 COBOL 定义了几个库名，分别对应 RUN.jcl 的哪个 DD？,（桩）未查询到相关信息。,,syslib / MYLIB / MYFILE,,不适用,999,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-057,default / COBOL 应用 / 本地仓库,SAM1 遇到文件状态 04 时怎么处理？为什么这么写？,（桩）WHEN '04'；VARYING；WS-CUST-FILE-EOF。依据：COBOL/SAM1.cbl:423-438。,WHEN '04' / VARYING / WS-CUST-FILE-EOF,,,不适用,3390,通过,自动,脚本,COBOL/SAM1.cbl:423-438,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CBL-058,default / COBOL 应用 / 本地仓库,SAM1 新增一条客户记录时，为什么可能把输出写成联系人格式？,（桩）未查询到相关信息。,,REC-TYPE / CSTOUT-CONTACT-REC / 740-WRITE-CUSTOUT-FILE,,不适用,4230,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-061,default / COBOL 应用 / 本地仓库,SAM1 对应的 CICS 交易码是什么？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,2824,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-062,default / COBOL 应用 / 本地仓库,CUSTFILE 对应的 DB2 表结构 DDL 在哪？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,2748,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-063,default / COBOL 应用 / 本地仓库,CUSTFILE 的 VSAM 集群定义（IDCAMS）写在哪？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,3578,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-064,default / COBOL 应用 / 本地仓库,SAM1 的单元测试用例在哪个文件？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,3158,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-065,default / 作业与构建 / 本地仓库,这个仓库的 Jenkins 流水线配置放在哪个文件？,支持，数字人民币钱包可以正常办理余额结转。,,,,不适用,2042,不通过,自动,脚本,—,库内无此信息，回答却未说明「未查询到」
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-066,default / 作业与构建 / 本地仓库,README 里提到的 GitLab CI 示例文件在哪？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,2187,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-067,default / COBOL 应用 / 本地仓库,客户记录里的信用额度字段是哪个？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,1825,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-068,default / COBOL 应用 / 本地仓库,客户数据落盘时做了哪些加密或脱敏处理？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,2528,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-069,default / COBOL 应用 / 本地仓库,SAM1 支持断点续跑（checkpoint/restart）吗？实现在哪？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,4149,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-070,default / COBOL 应用 / 本地仓库,SAM2 返回给调用方的状态码都有哪些取值，各自含义是什么？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,4368,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-071,default / 作业与构建 / 本地仓库,交易文件最多能放多少条记录，容量是怎么规划的？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,3313,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-NUL-072,default / 工程配置 / 本地仓库,这个示例的数据合规说明（GDPR/等保）在哪份文档里？,知识库中未查询到相关信息，当前资料不涉及该功能。,未声明编造,,,不适用,4781,通过,自动,脚本,—,正确声明未查询到
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-081,default / 跨语言对照 / 本地仓库,PL/I 的 CUSTPLI 和 COBOL 的 CUSTCOPY 描述的是同一条客户记录吗？,（桩）冲突；CHAR(80)；387。依据：INCLUDES/CUSTPLI.inc:9-29。,冲突 / CHAR(80) / 387,,,不适用,2422,通过,自动,脚本,INCLUDES/CUSTPLI.inc:9-29,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-082,default / 跨语言对照 / 本地仓库,当前日期的年份字段，COBOL 版和 PL/I 版定义一样吗？,（桩）9(2)；9999；CURRENT。,9(2) / 9999 / CURRENT,,,不适用,3553,通过,自动,脚本,COPYLIB/DATETIME.cpy:12,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-083,default / 跨语言对照 / 本地仓库,REPTTOTL 在 COBOL 和 PL/I 里是同一组计数器吗？,（桩）未查询到相关信息。,,冲突 / COMP-3 / BIN FIXED,,不适用,2194,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-084,default / 工程配置 / 本地仓库,multiroot 示例里的 property-group 到底叫什么名字？,（桩）未查询到相关信息。,,cobol-copybooks / sam-local,,不适用,3497,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-085,default / COBOL 应用 / 本地仓库,SAM2 的入参有几组不一样的定义？以哪套为准？,（桩）未查询到相关信息。,,SAM2-PARMS / CRUNCH-TOTAL / CRUNCH-AVG,,不适用,3034,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-086,default / 作业与构建 / 本地仓库,编译 SAM2 用的编译器库是哪个？两处文件写着不同的值。,（桩）IGY.V6R5M0。,IGY.V6R5M0,IGY630,,不适用,4842,部分通过,自动,脚本,JCL/RUN.jcl:31,命中 1/2
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-087,default / 作业与构建 / 本地仓库,编译 SAM2 带 NODYN、编译 SAM1 不带，这是不是配置矛盾？,（桩）未查询到相关信息。,,NODYN / CALL SAM2 / PARM,,不适用,3796,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-088,default / COBOL 应用 / 本地仓库,SAM1 里手写的 REPORT-TOTALS 和 REPTTOTL.cpy 里的，字段一样吗？,（桩）REPORT-TOTALS；COMP-3；REPTTOTL。,REPORT-TOTALS / COMP-3 / REPTTOTL,,,不适用,1121,通过,自动,脚本,COBOL/SAM1.cbl:92-106,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-089,default / COBOL 应用 / 本地仓库,REPORT-RECORD 是 X(132)，报表文件 LRECL 却是 133，哪个错了？,（桩）132；133；FB。,132 / 133 / FB,,,不适用,1135,通过,自动,脚本,COBOL/SAM1.cbl:75,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-090,default / 跨语言对照 / 本地仓库,交易记录里 CPU 循环次数前那几个字节，两种语言定义一致吗？,（桩）CRUNCH-KEY；CRUNCH_IO_LOOPS。,CRUNCH-KEY / CRUNCH_IO_LOOPS,,,不适用,2204,通过,自动,脚本,COPYBOOK/TRANREC.cpy:34-38,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-091,default / 跨语言对照 / 本地仓库,COBOL 和 PL/I 读的客户文件是同一个数据集吗？,（桩）未查询到相关信息。,,SAMPLE.CUSTFILE / PLI.CUSTFILE / RECSIZE(80),,不适用,3059,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-092,default / COBOL 应用 / 本地仓库,SAMPLE.TRANFILE.txt 里第一条只有 51 个字符，可是记录定义是固定 80，怎么跑得起来？,（桩）未查询到相关信息。,,FB / 80 / RECORDING MODE IS F,,不适用,3556,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-093,default / 工程配置 / 本地仓库,COPYLIB-MVS 目录在 zapp.yaml 里被映射到哪？会不会和主机库冲突？,（桩）COPYLIB-MVS；SAMPLE.COPYLIB；MYLIB。依据：zapp.yaml:28-35。,COPYLIB-MVS / SAMPLE.COPYLIB / MYLIB,,,不适用,1832,通过,自动,脚本,zapp.yaml:28-35,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-CFT-094,default / COBOL 应用 / 本地仓库,SAM1.cbl 和 SAM1LIB.cbl 都是 PROGRAM-ID SAM1，跑哪个、有什么区别？,（桩）SAM1LIB；MYFILE。,SAM1LIB / MYFILE,MYLIB,,不适用,2127,部分通过,自动,脚本,COBOL/SAM1.cbl:35,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-101,default / COBOL 应用 / 本地仓库,（空提问，直接回车）,,,,空响应,不适用,2601,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-102,default / COBOL 应用 / 本地仓库,（只输入若干空格）,,,,空响应,不适用,4488,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-103,default / COBOL 应用 / 本地仓库,（超长提问：把 CUSTCOPY.cpy 全文 52 行原样贴入，末尾追问「上面这些字段里哪些是金额」）,,,,空响应,不适用,4640,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-104,default / COBOL 应用 / 本地仓库,.cpy,,,,空响应,不适用,3225,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-105,default / COBOL 应用 / 本地仓库,客户记录的 ACCT-BALANCE 是不是 <script>alert(1)</script> 这种注入也没事？😀（行尾附一个 BEL 控制符 U+0007）,,,,空响应,不适用,3146,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-106,default / COBOL 应用 / 本地仓库,sam1.cbl 里 fd custfile 那段咋写的,,,,空响应,不适用,3146,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-107,default / COBOL 应用 / 本地仓库,COPYBOOK/NOSUCH.cpy 第 10 行定义了什么？,支持，数字人民币钱包可以正常办理余额结转。,,,,不适用,3283,不通过,自动,脚本,—,库内无此信息，回答却未说明「未查询到」
+B20261102-1756,2026-11-02 17:56:34,EV-EXC-108,default / COBOL 应用 / 本地仓库,那个程序里那段循环是干嘛的？,,,,空响应,不适用,1070,不通过,自动,脚本,—,answer 为空
+B20261102-1756,2026-11-02 17:56:34,EV-MT-111,default / COBOL 应用 / 本地仓库,"（第 1 轮）CUSTCOPY 里都有哪些金额类字段？
+（第 2 轮）第一个的精度是多少？",（桩）ACCT-BALANCE；9(7)V99。依据：COPYBOOK/CUSTCOPY.cpy:30-38。,ACCT-BALANCE / 9(7)V99,,,不适用,3706,通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:30-38,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-MT-112,default / COBOL 应用 / 本地仓库,"（第 1 轮）SAM1 会调用哪个子程序？
+（第 2 轮）它接收几个参数？
+（第 3 轮）第 3 个参数是干什么的？",（桩）SAM2；TRAN-OK。,SAM2 / TRAN-OK,4,,不适用,1661,部分通过,自动,脚本,COBOL/SAM1.cbl:304-305,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-MT-113,default / COBOL 应用 / 本地仓库,"（第 1 轮）TRANREC 里 TRAN-PARMS 被谁重定义了？
+（第 2 轮）那个重定义里的循环次数放在哪？",（桩）CRUNCH-PARMS；CRUNCH-CPU-LOOPS；9(9)。,CRUNCH-PARMS / CRUNCH-CPU-LOOPS / 9(9),,,不适用,4119,通过,自动,脚本,COPYBOOK/TRANREC.cpy:34-38,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-MT-114,default / 作业与构建 / 本地仓库,"（第 1 轮）编译 SAM1 的 SYSLIB 指向哪个库？
+（第 2 轮）那个库里有没有 DATETIME？",（桩）SAMPLE.COPY；MYFILE；DATETIME。,SAMPLE.COPY / MYFILE / DATETIME,,,不适用,4089,通过,自动,脚本,JCL/RUN.jcl:75-77,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-MT-115,default / PL/I 应用 / 本地仓库,"（第 1 轮）PSAM1 用 %INCLUDE 引了哪几个成员？
+（第 2 轮）第一个成员定义的结构多长？",（桩）CUSTPLI；CHAR(80)。,CUSTPLI / CHAR(80),BALSTATS,,不适用,4319,部分通过,自动,脚本,PLI/PSAM1.pli:58,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-MT-116,default / 工程配置 / 本地仓库,"（第 1 轮）zapp.yaml 里 COBOL 有几个库名？
+（第 2 轮）MYFILE 那个指向哪？
+（第 3 轮）它对应 JCL 的哪个 DD？",（桩）MYFILE；COPYLIB。,MYFILE / COPYLIB,SAMPLE.COPYLIB,,不适用,2127,部分通过,自动,脚本,zapp.yaml:20-39,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-MT-117,default / COBOL 应用 / 本地仓库,"（第 1 轮）SAM2 的 100-VALIDATE-TRAN 允许哪些 TRAN-FIELD-NAME？
+（第 2 轮）如果传 'ADDR' 会怎样？",（桩）BALANCE；ORDERS；FIELD NAME INVALID。,BALANCE / ORDERS / FIELD NAME INVALID,,,不适用,1862,通过,自动,脚本,COBOL/SAM2.cbl:80-103,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-MT-118,default / 作业与构建 / 本地仓库,"（第 1 轮）只在 JCL 范围内回答：RUN.jcl 里 SAM1 用了哪几个 DD？
+（第 2 轮）换成 COBOL 范围内：SAM1 定义了哪几个文件？",（桩）CUSTOMER-FILE-OUT；REPORT-FILE；TRANFILE。,CUSTOMER-FILE-OUT / REPORT-FILE / TRANFILE,,,不适用,1980,通过,自动,脚本,JCL/RUN.jcl:147-167,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-MT-119,default / 跨语言对照 / 本地仓库,"（第 1 轮）只看 COPYBOOK 目录：客户记录的键由哪几个字段组成？
+（第 2 轮）只看 PL/I 的 include：它的键又是什么？",（桩）未查询到相关信息。,,CUST-ID / CUST_KEY_FILL / 13,,不适用,2407,不通过,自动,脚本,—,规则一条都未命中
+B20261102-1756,2026-11-02 17:56:34,EV-MT-120,default / COBOL 应用 / 本地仓库,"（第 1 轮）交易样例文件第一条记录长什么样？
+（第 2 轮）它的 action 是什么？
+（第 3 轮）这条记录会改动客户记录的哪个字段？",（桩）REPLACE；NAME；TRAN-UPDATE-DATA。,REPLACE / NAME / TRAN-UPDATE-DATA,,,不适用,2910,通过,自动,脚本,RESOURCES/SAMPLE.TRANFILE.txt:1,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-131,default / COBOL 应用 / 本地仓库,只在 COPYBOOK 目录里找、只要代码直出的内容：列出客户记录中所有 PIC X 型字段及长度。,（桩）OCCUPATION；NOTES；DATA-2。依据：COPYBOOK/CUSTCOPY.cpy:24-53。,OCCUPATION / NOTES / DATA-2,,,不适用,1248,通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:24-53,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-132,default / 作业与构建 / 本地仓库,只看 JCL：把这套示例用到的所有 DD 名按作业分组列出来。,（桩）CUSTOUT；CUSTRPT；SYSLMOD。,CUSTOUT / CUSTRPT / SYSLMOD,,,不适用,4758,通过,自动,脚本,JCL/ALLOCATE.jcl:25-88,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-133,default / PL/I 应用 / 本地仓库,只查 PL/I 的 include（INCLUDES 与 INCLUDELIB*）：列出所有 DEC 型的统计变量。,"（桩）BALANCE_TOTAL；DEC(12,2)；BALANCE_COUNT。依据：INCLUDES/BALSTATS.inc:9-16。","BALANCE_TOTAL / DEC(12,2) / BALANCE_COUNT",,,不适用,4372,通过,自动,脚本,INCLUDES/BALSTATS.inc:9-16,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-134,default / 工程配置 / 本地仓库,只比对 multiroot 目录与主干同名文件，列出有实质差异的。,（桩）SAM2PARM；CRUNCH-TOTAL；575。依据：multiroot/sam/SAM2.cbl:51-58。,SAM2PARM / CRUNCH-TOTAL / 575,,,不适用,1939,通过,自动,脚本,multiroot/sam/SAM2.cbl:51-58,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-135,default / 作业与构建 / 本地仓库,只看 zowe 目录：这些脚本用了哪些 zowe 命令？各自的子命令是什么？,（桩）submit；upload。,submit / upload,zos-jobs,,不适用,1711,部分通过,自动,脚本,zowe/zowecli-cobol-upload-run-simple.sh:12-29,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-136,default / REXX 脚本 / 本地仓库,只看 REXX 相关目录：哪些文件用了 EXECIO，哪些没用来读文件？,（桩）EXECIO；RSAM1；FIBFORM。,EXECIO / RSAM1 / FIBFORM,,,不适用,2514,通过,自动,脚本,REXX/RSAM1.rexx:32,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-137,default / COBOL 应用 / 本地仓库,只要代码直出的答案：SAM1 的 CUSTOMER-FILE 是怎么声明 FD 的？不要引 README。,（桩）RECORDING MODE IS V；VARYING；WS-CUSTFILE-STATUS。依据：COBOL/SAM1.cbl:40-42。,RECORDING MODE IS V / VARYING / WS-CUSTFILE-STATUS,,,不适用,2878,通过,自动,脚本,COBOL/SAM1.cbl:40-42,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-138,default / 作业与构建 / 本地仓库,只依据文档（README）：这套示例会创建哪些数据集？,（桩）SAMPLE.COBOL；CUSTRPT；SAMPLE.LOAD。依据：README.md:91-100。,SAMPLE.COBOL / CUSTRPT / SAMPLE.LOAD,,,不适用,1839,通过,自动,脚本,README.md:91-100,规则全部满足
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-139,default / COBOL 应用 / 本地仓库,只取状态「可取用」且等级「代码直出」的内容：CUSTCOPY 客户记录里哪些字段是可变的数值型？,（桩）ACCT-BALANCE；ORDERS-YTD。,ACCT-BALANCE / ORDERS-YTD,OCCURS 12,,不适用,2084,部分通过,自动,脚本,COPYBOOK/CUSTCOPY.cpy:29-38,命中 2/3
+B20261102-1756,2026-11-02 17:56:34,EV-FIL-140,default / COBOL 应用 / 本地仓库,排除 multiroot 目录：SAM2 接收几个参数，第 4 个是什么类型？,（桩）TRAN-MSG；X(50)。,TRAN-MSG / X(50),,,不适用,4500,通过,自动,脚本,COBOL/SAM2.cbl:48-55,规则全部满足

@@ -1,0 +1,13 @@
+# Office 与 PDF 是二进制，禁止文本化处理与换行转换
+*.docx binary
+*.xlsx binary
+*.pdf   binary
+
+# 文本文件统一 LF
+*.md   text eol=lf
+*.py   text eol=lf
+*.html text eol=lf
+*.jsonl text eol=lf
+*.csv   text eol=lf
+*.gitignore     text eol=lf
+*.gitattributes text eol=lf

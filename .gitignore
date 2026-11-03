@@ -1,0 +1,16 @@
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+*~
+~$*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+
+# 临时文件
+*.tmp
+*.bak
+_*
