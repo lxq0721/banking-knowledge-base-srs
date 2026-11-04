@@ -1,7 +1,11 @@
-# Office 与 PDF 是二进制，禁止文本化处理与换行转换
+# Office、PDF 与图片是二进制，禁止文本化处理与换行转换
+# 图片这行不能省：本机 core.autocrlf=true，未声明的二进制文件靠启发式判定，
+# 一旦判错会在检出时被插入 CR，PNG 直接损坏
 *.docx binary
 *.xlsx binary
 *.pdf   binary
+*.png  binary
+*.jpg  binary
 
 # 文本文件统一 LF
 *.md   text eol=lf
